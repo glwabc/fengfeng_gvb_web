@@ -7,12 +7,13 @@
       <div class="gvb_aside_title">枫枫知道后台系统</div>
     </div>
     <div class="gvb_aside_body flex">
-
+      <GVBAsideMenu></GVBAsideMenu>
     </div>
   </aside>
 </template>
 
 <script setup>
+import GVBAsideMenu from "./gvb_aside_menu.vue"
 </script>
 
 <style lang="scss">

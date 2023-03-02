@@ -1,6 +1,6 @@
 <template>
   <div class="gvb_user_info">
-    <div class="avatar">
+    <div class="avatar" v-if="props.isAvatar">
       <img src="http://blog.fengfengzhidao.com/uploads/file/avatar/%E5%A4%B4%E5%83%8F_0006_23.jpg" alt="">
     </div>
     <div class="drop_menu">
@@ -34,6 +34,13 @@
 import {useRouter} from "vue-router"
 
 const router = useRouter()
+const props = defineProps({
+  // 是否显示头像部分
+  isAvatar:{
+    type: Boolean,
+    default: false,
+  }
+})
 
 function menuClick({key}) {
   if (key === "logout") {
@@ -45,6 +52,9 @@ function menuClick({key}) {
   })
 
 }
+
+
+
 </script>
 
 <style>
