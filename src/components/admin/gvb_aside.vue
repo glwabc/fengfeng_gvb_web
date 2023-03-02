@@ -1,0 +1,43 @@
+<template>
+  <aside class="gvb_aside">
+    <div class="gvb_aside_header flex">
+      <div class="gvb_aside_logo flex">
+        <img src="http://www.fengfengzhidao.com/static/my/img/backend/slogan.png" alt="">
+      </div>
+      <div class="gvb_aside_title">枫枫知道后台系统</div>
+    </div>
+    <div class="gvb_aside_body flex">
+
+    </div>
+  </aside>
+</template>
+
+<script setup>
+</script>
+
+<style lang="scss">
+.gvb_aside {
+  width: 240px;
+  height: 100vh;
+  background-color: var(--slide);
+
+  .gvb_aside_header {
+    width: 100%;
+    height: 180px;
+    flex-direction: column;
+  }
+
+  .gvb_aside_logo {
+    padding: 10px;
+
+    img {
+      width: 80%;
+    }
+  }
+
+  .gvb_aside_title {
+    font-size: 20px;
+    color: #e7e7e7;
+  }
+}
+</style>

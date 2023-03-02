@@ -1,10 +1,6 @@
 <template>
   <div class="gvb_admin">
-    <aside>
-      <div>
-
-      </div>
-    </aside>
+    <GVBAside></GVBAside>
     <div class="main">
       <header>
         <div class="left">
@@ -17,9 +13,8 @@
         <div class="right">
           <div class="icon_actions">
             <i class="fa fa-home"></i>
-            <i class="fa fa-moon-o"></i>
-            <i class="fa fa-sun-o"></i>
-            <i class="fa fa-arrows-alt"></i>
+            <GVBTheme></GVBTheme>
+            <GVBFullScreen></GVBFullScreen>
           </div>
           <div class="avatar">
             <img src="http://blog.fengfengzhidao.com/uploads/file/avatar/%E5%A4%B4%E5%83%8F_0006_23.jpg" alt="">
@@ -31,17 +26,17 @@
                 <i class="fa fa-angle-down"></i>
               </a>
               <template #overlay>
-                <a-menu>
-                  <a-menu-item>
+                <a-menu @click="menuClick">
+                  <a-menu-item key="user_center">
                     <a href="javascript:;">个人中心</a>
                   </a-menu-item>
-                  <a-menu-item>
+                  <a-menu-item key="my_messages">
                     <a href="javascript:;">我的消息</a>
                   </a-menu-item>
-                  <a-menu-item>
+                  <a-menu-item key="article_list">
                     <a href="javascript:;">文章列表</a>
                   </a-menu-item>
-                  <a-menu-item>
+                  <a-menu-item key="logout">
                     <a href="javascript:;">注销退出</a>
                   </a-menu-item>
                 </a-menu>
@@ -57,6 +52,24 @@
 </template>
 
 <script setup>
+import GVBTheme from "../../components/gvb_theme.vue"
+import GVBAside from "../../components/admin/gvb_aside.vue"
+import GVBFullScreen from "../../components/gvb_full_screen.vue"
+import {useRouter} from "vue-router"
+
+const router = useRouter()
+
+function menuClick({key}) {
+  if (key === "logout") {
+    console.log("logout")
+    return
+  }
+  router.push({
+    name: key
+  })
+
+}
+
 </script>
 
 <style lang="scss">
@@ -64,18 +77,11 @@
   width: 100%;
   display: flex;
 
-  aside {
-    width: 240px;
-    height: 100vh;
-    background-color: #2b3539;
-  }
-
   .main {
     width: calc(100% - 240px);
 
     header {
       height: 60px;
-      background-color: white;
       padding: 0 20px;
       display: flex;
       justify-content: space-between;
@@ -110,18 +116,19 @@
           border-radius: 50%;
         }
       }
-      .drop_menu{
+
+      .drop_menu {
         margin-left: 10px;
       }
     }
 
     .tabs {
       height: 30px;
-      border: 1px solid #f0eeee;
+      border: 1px solid var(--order);
     }
 
     main {
-      background-color: #f0eeee;
+      background-color: var(--bg);
       height: calc(100vh - 90px);
     }
   }
