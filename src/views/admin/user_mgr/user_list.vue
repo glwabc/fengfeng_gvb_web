@@ -2,7 +2,7 @@
   <div class="gvb_container">
     <div class="gvb_search">
       <a-input-search
-          placeholder="input search text"
+          placeholder="搜索用户昵称"
           style="width: 200px"
       />
     </div>
@@ -25,6 +25,10 @@
           </template>
           <template v-if="column.key === 'created_at'">
             <span>{{ getFormatDate(record.created_at) }}</span>
+          </template>
+          <template v-if="column.key === 'action'">
+            <a-button class="gvb_table_action update" type="primary">编辑</a-button>
+            <a-button class="gvb_table_action delete" type="danger">删除</a-button>
           </template>
         </template>
       </a-table>
@@ -63,6 +67,7 @@ const data = reactive({
     {title: 'ip', dataIndex: 'ip', key: 'ip'},
     {title: '地址', dataIndex: 'addr', key: 'addr'},
     {title: '注册时间', dataIndex: 'created_at', key: 'created_at'},
+    {title: '操作', dataIndex: 'action', key: 'action'},
   ],
   list: [
     {
@@ -83,6 +88,7 @@ const data = reactive({
   selectedRowKeys: [],
 })
 
+// 选择复选框
 function onSelectChange(selectedKeys) {
   data.selectedRowKeys = selectedKeys
 }
@@ -125,6 +131,10 @@ function removeBatch() {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+  }
+
+  .gvb_table_action.update {
+    margin-right: 10px;
   }
 }
 </style>

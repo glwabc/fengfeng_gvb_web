@@ -5,11 +5,10 @@ import vue from '@vitejs/plugin-vue'
 
 
 export default ({mode}) => {
-    console.log(mode)
     const env = loadEnv(mode, process.cwd())
     const baseUrl = env.VITE_API
     return defineConfig({
-        envPrefix: ["VITE_"],
+        envPrefix: ["VITE_"],  // 需要使用的前缀
         plugins: [vue()],
         resolve: {
             alias: {
