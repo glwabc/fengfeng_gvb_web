@@ -53,6 +53,7 @@
         </template>
       </template>
     </GVBTable>
+
   </div>
 
 </template>
@@ -87,6 +88,7 @@ const updateState = reactive({
   path: ""
 })
 
+// 打开模态框的操作
 function updateModal(record) {
   data.modalVisible = true
   updateState.id = record.id
@@ -94,6 +96,7 @@ function updateModal(record) {
   updateState.path = record.path
 }
 
+// 修改图片的名称
 async function update() {
   try {
     await formRef.value.validate()
