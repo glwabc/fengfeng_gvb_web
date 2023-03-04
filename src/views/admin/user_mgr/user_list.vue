@@ -67,42 +67,60 @@
     <div class="gvb_search">
       <a-input-search
           placeholder="搜索用户昵称"
+          v-model:value="page.key"
           style="width: 200px"
+          @search="onSearch"
       />
+
+      <a-select
+          class="gvb_select"
+          v-model:value="page.role"
+          style="width: 200px"
+          allowClear
+          @change="onSearch"
+          :options="roleOptions"
+          placeholder="选择权限"
+      ></a-select>
+
+      <div class="gvb_refresh">
+        <a-button title="刷新本页" @click="refresh"><i class="fa fa-refresh"></i></a-button>
+      </div>
     </div>
     <div class="gvb_actions">
       <a-button type="primary" @click="addModal">添加</a-button>
       <a-button type="danger" @click="removeBatch" v-if="data.selectedRowKeys.length">批量删除</a-button>
     </div>
     <div class="gvb_tables">
-      <a-table
-          :columns="data.columns"
-          :row-selection="{
+      <a-spin :spinning="data.spinning" tip="加载中..." :delay="300">
+        <a-table
+            :columns="data.columns"
+            :row-selection="{
             selectedRowKeys: data.selectedRowKeys,
             onChange: onSelectChange }"
-          :pagination="false"
-          row-key="id"
-          :data-source="data.list">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'avatar'">
-            <img class="gvb_table_avatar" :src="record.avatar" alt="">
+            :pagination="false"
+            row-key="id"
+            :data-source="data.list">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'avatar'">
+              <img class="gvb_table_avatar" :src="record.avatar" alt="">
+            </template>
+            <template v-if="column.key === 'created_at'">
+              <span>{{ getFormatDate(record.created_at) }}</span>
+            </template>
+            <template v-if="column.key === 'action'">
+              <a-button class="gvb_table_action update" @click="updateModal(record)" type="primary">编辑</a-button>
+              <a-popconfirm
+                  title="是否确定删除?"
+                  ok-text="删除"
+                  cancel-text="取消"
+                  @confirm="userRemove(record.id)"
+              >
+                <a-button class="gvb_table_action delete" type="danger">删除</a-button>
+              </a-popconfirm>
+            </template>
           </template>
-          <template v-if="column.key === 'created_at'">
-            <span>{{ getFormatDate(record.created_at) }}</span>
-          </template>
-          <template v-if="column.key === 'action'">
-            <a-button class="gvb_table_action update" @click="updateModal(record)" type="primary">编辑</a-button>
-            <a-popconfirm
-                title="是否确定删除?"
-                ok-text="删除"
-                cancel-text="取消"
-                @confirm="userRemove(record.id)"
-            >
-              <a-button class="gvb_table_action delete" type="danger">删除</a-button>
-            </a-popconfirm>
-          </template>
-        </template>
-      </a-table>
+        </a-table>
+      </a-spin>
     </div>
     <div class="gvb_pages">
       <a-pagination
@@ -123,12 +141,16 @@ import {getFormatDate} from "@/utils/date";
 import {userListApi, userCreateApi, userRemoveBatchApi, updateUserNickNameApi} from "@/api/user_api";
 import {message} from "ant-design-vue";
 
+// 分页
 const page = reactive({
   page: 1,
-  limit: 5
+  limit: 5,
+  key: "",
+  role: undefined
 })
+// 表单ref
 const formRef = ref(null)
-
+// 用户权限映射
 const roleOptions = [
   {
     value: 1,
@@ -143,7 +165,7 @@ const roleOptions = [
     label: "游客"
   }
 ]
-
+// 验证确认密码是否一致
 let validateRePassword = async (_rule, value) => {
   if (value === '') {
     return Promise.reject('Please input the password again');
@@ -166,7 +188,7 @@ const data = reactive({
     {title: '地址', dataIndex: 'addr', key: 'addr'},
     {title: '注册时间', dataIndex: 'created_at', key: 'created_at'},
     {title: '操作', dataIndex: 'action', key: 'action'},
-  ],
+  ],  // 列参数
   list: [
     {
       "id": 2,
@@ -182,11 +204,12 @@ const data = reactive({
       "role": "用户",
       "sign_status": "邮箱"
     },
-  ],
-  selectedRowKeys: [],
-  count: 0,
-  modalVisible: false,
-  modalUpdateVisible: false,
+  ], // 数据
+  selectedRowKeys: [], // 选择的id列表
+  count: 0, // 总数
+  modalVisible: false, // 创建用户的modal
+  modalUpdateVisible: false,  // 编辑用户的modal
+  spinning: true, // 默认是在加载中
 })
 
 const _formState = {
@@ -210,6 +233,7 @@ const formUpdateState = reactive({
   user_id: 0
 })
 
+// 添加用户的modal
 function addModal() {
   data.modalVisible = true
 }
@@ -219,6 +243,7 @@ function onSelectChange(selectedKeys) {
   data.selectedRowKeys = selectedKeys
 }
 
+// 批量删除
 async function removeBatch() {
   let res = await userRemoveBatchApi(data.selectedRowKeys)
   if (res.code) {
@@ -229,12 +254,16 @@ async function removeBatch() {
   getData()
 }
 
+// 获取列表页数据
 async function getData() {
+  data.spinning = true
   let res = await userListApi(page)
   data.list = res.data.list
   data.count = res.data.count
+  data.spinning = false
 }
 
+// 创建用户
 async function handleOk() {
   try {
     await formRef.value.validate()
@@ -255,10 +284,12 @@ async function handleOk() {
 
 }
 
+// 分页
 function pageChange(_page, limit) {
   getData()
 }
 
+// 删除单个用户
 async function userRemove(user_id) {
   let res = await userRemoveBatchApi([user_id])
   if (res.code) {
@@ -269,7 +300,7 @@ async function userRemove(user_id) {
   getData()
 }
 
-
+// 更新用户的模态框函数
 function updateModal(record) {
   data.modalUpdateVisible = true
   formUpdateState.user_id = record.id
@@ -277,6 +308,7 @@ function updateModal(record) {
   formUpdateState.role = record.role_id
 }
 
+// 更新用户
 async function update() {
   data.modalUpdateVisible = false
   let res = await updateUserNickNameApi(formUpdateState)
@@ -285,6 +317,21 @@ async function update() {
     return
   }
   message.success(res.msg)
+  getData()
+}
+
+// 刷新
+function refresh() {
+  message.success("刷新成功")
+  // location.reload()
+  getData()
+}
+
+function onSearch() {
+
+  page.key = page.key.trim()
+  page.page = 1
+
   getData()
 }
 
@@ -299,6 +346,21 @@ getData()
   .gvb_search {
     padding: 10px;
     border-bottom: 1px solid var(--bg);
+    position: relative;
+
+    .gvb_select {
+      margin-left: 10px;
+    }
+
+    .gvb_refresh {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+
+      i {
+        color: var(--text);
+      }
+    }
   }
 
   .gvb_actions {
@@ -310,7 +372,7 @@ getData()
   }
 
   .gvb_tables {
-    padding: 10px;
+    padding: 0 10px 10px 10px;
   }
 
   .gvb_pages {
