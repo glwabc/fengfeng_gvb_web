@@ -28,13 +28,15 @@
 </template>
 
 <script setup>
-
 import {reactive} from "vue";
 import {message} from 'ant-design-vue';
 import {emailLoginApi} from "@/api/user_api";
 import {parseToken} from "@/utils/jwt";
 import {useStore} from "@/stores/store";
+import {useRouter, useRoute} from "vue-router";
 
+const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const data = reactive({
   user_name: "",
@@ -59,7 +61,19 @@ async function emailLogin() {
   // res.data就是jwt
   message.success(res.msg)
   let userInfo = parseToken(res.data)
+  userInfo.token = res.data
   store.setUserInfo(userInfo)
+  const redirect_url = route.query.redirect_url
+  if (redirect_url === undefined) {
+    setTimeout(() => {
+      router.push({name: "home"})
+    }, 1000)
+    return
+  }
+  setTimeout(() => {
+      router.push({path: redirect_url})
+    }, 1000)
+
   return
 
 }

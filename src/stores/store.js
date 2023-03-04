@@ -6,6 +6,7 @@ export const useStore = defineStore('gvb', {
         return {
             theme: true,
             userInfo: {
+                token: "",
                 nick_name: '',
                 role: 0,
                 user_id: 0,
@@ -56,7 +57,7 @@ export const useStore = defineStore('gvb', {
             let userInfo = JSON.parse(info)
             let exp = userInfo.exp
             let nowTime = new Date().getTime()
-            if (((exp * 1000) - nowTime) > 0){
+            if (((exp * 1000) - nowTime) < 0){
                 // 过期了
                 message.warn("当前登录已失效")
                 return;
