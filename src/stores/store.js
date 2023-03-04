@@ -1,9 +1,17 @@
 import {defineStore} from 'pinia'
+import {message} from 'ant-design-vue';
 
 export const useStore = defineStore('gvb', {
     state: () => {
         return {
-            theme: true
+            theme: true,
+            userInfo: {
+                nick_name: '',
+                role: 0,
+                user_id: 0,
+                avatar: '',
+                exp: 1677902977.84318
+            }
         }
     },
     actions: {
@@ -29,6 +37,31 @@ export const useStore = defineStore('gvb', {
             }
             this.theme = true
 
+        },
+
+        // 修改userInfo
+        setUserInfo(info) {
+            this.$patch({
+                userInfo: info
+            })
+            // 持久化
+            localStorage.setItem("userInfo", JSON.stringify(info))
+        },
+        loadUserInfo() {
+            let info = localStorage.getItem("userInfo")
+            if (info === null) {
+                return
+            }
+            // 先json解析
+            let userInfo = JSON.parse(info)
+            let exp = userInfo.exp
+            let nowTime = new Date().getTime()
+            if (((exp * 1000) - nowTime) > 0){
+                // 过期了
+                message.warn("当前登录已失效")
+                return;
+            }
+            this.setUserInfo(userInfo)
         }
     }
 })

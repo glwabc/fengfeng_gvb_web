@@ -1,7 +1,16 @@
-
 <template>
   <router-view/>
 </template>
+
+<script setup>
+import {useStore} from "@/stores/store";
+
+const store = useStore()
+
+store.loadUserInfo()
+
+
+</script>
 
 <style lang="scss">
 * {
@@ -10,10 +19,11 @@
   box-sizing: border-box;
 }
 
-:root{
- --active: #2184fc;
+:root {
+  --active: #2184fc;
   --text: #555;
 }
 
 </style>
+
 
