@@ -74,7 +74,7 @@
 import {reactive, ref} from "vue";
 import {getFormatDate} from "@/utils/date";
 import {message} from "ant-design-vue";
-import {baseListApi} from "@/api/base_api";
+import {baseDeleteApi, baseListApi} from "@/api/base_api";
 
 const emits = defineEmits(["delete"])
 const props = defineProps({
@@ -106,6 +106,10 @@ const props = defineProps({
   likeTitle: {
     type: String,
     default: "模糊搜索"
+  },
+  defaultDelete: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -137,7 +141,19 @@ function onSelectChange(selectedKeys) {
 
 // 批量删除
 async function removeBatch() {
+  if (props.defaultDelete) {
+    let res = await baseDeleteApi(props.baseUrl, data.selectedRowKeys)
+    if (res.code) {
+      message.error(res.msg)
+      return
+    }
+    message.success(res.msg)
+    getData(page)
+    data.selectedRowKeys = []
+    return
+  }
   emits("delete", data.selectedRowKeys)
+  data.selectedRowKeys = []
 }
 
 // 获取列表页数据
@@ -155,8 +171,18 @@ function pageChange(_page, limit) {
 }
 
 // 删除单个用户
-async function userRemove(user_id) {
-  emits("delete", [user_id])
+async function userRemove(id) {
+  if (props.defaultDelete) {
+    let res = await baseDeleteApi(props.baseUrl, [id])
+    if (res.code) {
+      message.error(res.msg)
+      return
+    }
+    message.success(res.msg)
+    getData(page)
+    return
+  }
+  emits("delete", [id])
 }
 
 // 刷新
@@ -172,6 +198,9 @@ function onSearch() {
 }
 
 function ExportList(params) {
+  if (params === undefined) {
+    params = {}
+  }
   page.page = 1
   Object.assign(page, params)
   getData(page)
@@ -220,6 +249,10 @@ defineExpose({
 
   .gvb_tables {
     padding: 0 10px 10px 10px;
+
+    .ant-btn {
+      margin-right: 10px;
+    }
   }
 
   .gvb_pages {
