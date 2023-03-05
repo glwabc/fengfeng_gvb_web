@@ -6,7 +6,7 @@
       @click="goto"
   >
     <template v-for="menu in data.menuList" :key="menu.name">
-      <a-menu-item :key="menu.name" v-if="menu.children.length === 0">
+      <a-menu-item :key="menu" v-if="menu.children.length === 0">
         <template #icon>
           <i :class="'fa '+menu.icon"></i>
         </template>
@@ -17,7 +17,7 @@
           <i :class="'fa '+menu.icon"></i>
         </template>
         <template #title>{{ menu.title }}</template>
-        <a-menu-item v-for="sub_menu in menu.children" :key="sub_menu.name">
+        <a-menu-item v-for="sub_menu in menu.children" :key="sub_menu">
           <template #icon>
             <i :class="'fa '+sub_menu.icon"></i>
           </template>
@@ -33,7 +33,9 @@
 <script setup>
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {useStore} from "@/stores/store";
 
+const store = useStore()
 const data = reactive({
   menuList: [
     {
@@ -90,9 +92,14 @@ const data = reactive({
 const selectedKeys = ref(["1"])
 const router = useRouter()
 
-function goto(event) {
+function goto({item, key, keyPath}) {
+  store.addTab({
+    name: key.name,
+    title: key.title,
+  })
+  // 加入到 tabs
   router.push({
-    name: event.key
+    name: key.name
   })
 }
 

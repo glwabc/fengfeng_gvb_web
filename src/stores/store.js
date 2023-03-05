@@ -12,7 +12,8 @@ export const useStore = defineStore('gvb', {
                 user_id: 0,
                 avatar: '',
                 exp: 1677902977.84318
-            }
+            },
+            tabList: []
         }
     },
     actions: {
@@ -57,12 +58,44 @@ export const useStore = defineStore('gvb', {
             let userInfo = JSON.parse(info)
             let exp = userInfo.exp
             let nowTime = new Date().getTime()
-            if (((exp * 1000) - nowTime) < 0){
+            if (((exp * 1000) - nowTime) < 0) {
                 // 过期了
                 message.warn("当前登录已失效")
                 return;
             }
             this.setUserInfo(userInfo)
+        },
+
+        // 添加tab
+        addTab(tab) {
+            // 已经存在，就不要再添加了
+            // 不存在的时候，进行添加
+            if (this.tabList.findIndex((item) => item.name === tab.name) === -1) {
+                this.tabList.push({name: tab.name, title: tab.title})
+            }
+        },
+        // tabs的持久化存储
+        saveTabs() {
+            localStorage.setItem("tabs", JSON.stringify(this.tabList))
+        },
+        // 加载组件
+        loadTabs() {
+            let tabs = localStorage.getItem("tabs")
+            if (tabs === null) {
+                this.tabList = [{title: "首页", name: "home"}]
+                return
+            }
+            this.tabList = JSON.parse(tabs)
+        },
+        // 移除tab
+        removeTab(tab) {
+            let index = this.tabList.findIndex((item) => item.name === tab.name)
+            this.tabList.splice(index, 1)
+            return index
+        },
+        // 移除全部tab
+        removeTabAll() {
+            this.tabList = [{title: "首页", name: "home"}]
         }
     }
 })

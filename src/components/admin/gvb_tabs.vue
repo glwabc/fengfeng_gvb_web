@@ -1,25 +1,73 @@
 <template>
   <div class="gvb_tabs">
-    <div class="gvb_tab_item home">
-      首页
+    <div :class="isActive(item)"
+         v-for="(item, index) in store.tabList"
+         :key="index"
+         @click="checkTab(item)"
+    >
+      {{ item.title }}
+      <span @click.stop="removeTab(item)" v-if="item.name !== 'home'" class="gvb_tab_remove_icon">×</span>
     </div>
-    <div class="gvb_tab_item">
-      首页
-      <span class="gvb_tab_remove_icon">×</span>
-    </div>
-    <div class="gvb_tab_item active">
-      首页
-      <span class="gvb_tab_remove_icon">×</span>
-    </div>
-
-    <div class="gvb_tab_item remove_all">
+    <div class="gvb_tab_item remove_all" @click="removeTabAll">
       全部关闭
     </div>
-
   </div>
 </template>
 
-<script>
+<script setup>
+import {useStore} from "@/stores/store";
+import {useRoute, useRouter} from "vue-router";
+
+const store = useStore()
+const route = useRoute()
+const router = useRouter()
+// 是否选中
+function isActive(item) {
+  // 判断当前路由是否和item上的路由匹配
+  // 还要判断是不是home
+  if (route.name === item.name) {
+    return "gvb_tab_item active"
+  }
+  return "gvb_tab_item"
+}
+// 切换路由
+function checkTab(item) {
+  router.push({
+    name: item.name
+  })
+}
+// 移除tab
+function removeTab(item) {
+  let index = store.removeTab(item)
+  // 如果删除的是当前所在的tab
+  // 那就应该向前走一步
+  if (item.name === route.name) {
+    // 当前tab
+    // 前一个路由的路由索引
+    let beforeIndex = index - 1
+    // 前一个的路由
+    let beforeName = store.tabList[beforeIndex].name
+    router.push({
+      name: beforeName
+    })
+  }
+}
+// 关闭全部
+function removeTabAll() {
+  store.removeTabAll()
+  router.push({
+    name: "home"
+  })
+}
+// 加载路由
+store.loadTabs()
+// 监听刷新
+window.onbeforeunload = function () {
+  // 保存
+  store.saveTabs()
+  return undefined
+}
+
 </script>
 
 <style lang="scss">
@@ -78,12 +126,12 @@
         margin-right: 5px;
       }
 
-      .gvb_tab_remove_icon:hover{
+      .gvb_tab_remove_icon:hover {
         background-color: #8fbef3;
       }
     }
 
-    &.remove_all{
+    &.remove_all {
       position: absolute;
       right: 10px;
 
