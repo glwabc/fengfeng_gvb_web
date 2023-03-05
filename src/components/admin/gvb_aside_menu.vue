@@ -78,18 +78,18 @@ const data = reactive({
     },
     {
       id: 6,
-      icon: "fa-cog", // icon的图片 统一用 fa
-      title: "系统管理", // 菜单名称
+      icon: "fa-user-circle-o", // icon的图片 统一用 fa
+      title: "广告管理", // 菜单名称
       name: "", // 路由名称
       children: [
         {
           id: 7,
-          icon: "fa-cog", // icon的图片 统一用 fa
-          title: "系统配置", // 菜单名称
-          name: "system_list", // 路由名称
+          icon: "fa-user-circle", // icon的图片 统一用 fa
+          title: "广告列表", // 菜单名称
+          name: "advert_list", // 路由名称
         }
       ]
-    }
+    },
   ],
   openKeys: []
 })
@@ -110,7 +110,7 @@ function goto({item, key, keyPath}) {
 
 function onOpenChange(openKeys) {
   const latestOpenKey = openKeys.find(key => data.openKeys.indexOf(key) === -1);
-   data.openKeys = latestOpenKey ? [latestOpenKey] : [];
+  data.openKeys = latestOpenKey ? [latestOpenKey] : [];
 }
 
 function loadRoute(name) {
@@ -154,6 +154,10 @@ loadRoute()
 
 .ant-menu-sub.ant-menu-inline {
   background-color: var(--slide_sub_bg);
+}
+
+.ant-menu-submenu-selected {
+  color: inherit;
 }
 
 /*.ant-menu-inline .ant-menu-item {*/
