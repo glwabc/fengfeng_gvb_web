@@ -53,6 +53,11 @@ const router = createRouter({
                     name: "chat_list",
                     component: () => import("../views/admin/chat_list.vue")
                 },
+                 {
+                    path: "message_list",
+                    name: "message_list",
+                    component: () => import("../views/admin/message_list.vue")
+                },
                 {
                     path: "system_list",
                     name: "system_list",
