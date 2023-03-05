@@ -97,6 +97,13 @@ const data = reactive({
       name: "message_list", // 路由名称
       children: []
     },
+         {
+      id: 14,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "标签列表", // 菜单名称
+      name: "tag_list", // 路由名称
+      children: []
+    },
   ],
   openKeys: []
 })
