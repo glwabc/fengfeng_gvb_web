@@ -104,6 +104,20 @@ const data = reactive({
         }
       ]
     },
+      {
+      id: 10,
+      icon: "fa-user-circle-o", // icon的图片 统一用 fa
+      title: "日志管理", // 菜单名称
+      name: "", // 路由名称
+      children: [
+        {
+          id: 11,
+          icon: "fa-user-circle", // icon的图片 统一用 fa
+          title: "日志列表", // 菜单名称
+          name: "log_list", // 路由名称
+        }
+      ]
+    },
   ],
   openKeys: []
 })

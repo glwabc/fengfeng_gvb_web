@@ -152,7 +152,6 @@ const formUpdateState = reactive({
 
 const filter = ref(undefined)
 function onFilter(){
-  console.log(filter.value)
   gvbTable.value.ExportList({role: filter.value})
 }
 
