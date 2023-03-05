@@ -49,74 +49,46 @@ const data = reactive({
       children: []
     },
     {
-      id: 2,
-      icon: "fa-user-circle-o", // icon的图片 统一用 fa
-      title: "用户管理", // 菜单名称
-      name: "", // 路由名称
-      children: [
-        {
-          id: 3,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "用户列表", // 菜单名称
-          name: "user_list", // 路由名称
-        }
-      ]
+      id: 3,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "用户列表", // 菜单名称
+      name: "user_list", // 路由名称
+      children: []
     },
     {
-      id: 4,
-      icon: "fa-user-circle-o", // icon的图片 统一用 fa
-      title: "图片管理", // 菜单名称
-      name: "", // 路由名称
-      children: [
-        {
-          id: 5,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "图片列表", // 菜单名称
-          name: "image_list", // 路由名称
-        }
-      ]
+      id: 5,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "图片列表", // 菜单名称
+      name: "image_list", // 路由名称
+      children: []
     },
     {
-      id: 6,
-      icon: "fa-user-circle-o", // icon的图片 统一用 fa
-      title: "广告管理", // 菜单名称
-      name: "", // 路由名称
-      children: [
-        {
-          id: 7,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "广告列表", // 菜单名称
-          name: "advert_list", // 路由名称
-        }
-      ]
+      id: 7,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "广告列表", // 菜单名称
+      name: "advert_list", // 路由名称
+      children: []
     },
     {
-      id: 8,
-      icon: "fa-user-circle-o", // icon的图片 统一用 fa
-      title: "菜单管理", // 菜单名称
-      name: "", // 路由名称
-      children: [
-        {
-          id: 9,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "菜单列表", // 菜单名称
-          name: "menu_list", // 路由名称
-        }
-      ]
+      id: 9,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "菜单列表", // 菜单名称
+      name: "menu_list", // 路由名称
+      children: []
     },
-      {
-      id: 10,
-      icon: "fa-user-circle-o", // icon的图片 统一用 fa
-      title: "日志管理", // 菜单名称
-      name: "", // 路由名称
-      children: [
-        {
-          id: 11,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "日志列表", // 菜单名称
-          name: "log_list", // 路由名称
-        }
-      ]
+    {
+      id: 11,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "日志列表", // 菜单名称
+      name: "log_list", // 路由名称
+      children: []
+    },
+       {
+      id: 12,
+      icon: "fa-user-circle", // icon的图片 统一用 fa
+      title: "群聊消息", // 菜单名称
+      name: "chat_list", // 路由名称
+      children: []
     },
   ],
   openKeys: []
