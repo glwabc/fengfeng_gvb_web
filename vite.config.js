@@ -21,7 +21,8 @@ export default ({mode}) => {
                     target: baseUrl
                 },
                 "/api": {
-                    target: baseUrl
+                    target: baseUrl,
+                    changeOrigin: true,
                 }
             }
         }

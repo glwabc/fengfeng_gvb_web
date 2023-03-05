@@ -145,6 +145,7 @@ async function removeBatch() {
     let res = await baseDeleteApi(props.baseUrl, data.selectedRowKeys)
     if (res.code) {
       message.error(res.msg)
+      data.selectedRowKeys = []
       return
     }
     message.success(res.msg)
