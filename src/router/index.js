@@ -78,6 +78,11 @@ const router = createRouter({
                             name: "system_email",
                             component: () => import("../views/admin/system_mgr/email_setting.vue")
                         },
+                        {
+                            path: "qiniu",
+                            name: "system_qiniu",
+                            component: () => import("../views/admin/system_mgr/qiniu_setting.vue")
+                        },
                     ]
                 },
             ]
