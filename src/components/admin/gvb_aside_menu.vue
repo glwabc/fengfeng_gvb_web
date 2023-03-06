@@ -115,6 +115,12 @@ const data = reactive({
           icon: "fa-user-circle", // icon的图片 统一用 fa
           title: "网站设置", // 菜单名称
           name: "system_site", // 路由名称
+        },
+        {
+          id: 17,
+          icon: "fa-user-circle", // icon的图片 统一用 fa
+          title: "邮箱设置", // 菜单名称
+          name: "system_email", // 路由名称
         }
       ]
     },
