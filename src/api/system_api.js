@@ -31,3 +31,11 @@ export function getQQInfoApi() {
 export function updateQQInfoApi(data) {
     return Service.put("/api/settings/qq", data)
 }
+
+export function getJwtInfoApi() {
+    return Service.get("/api/settings/jwt")
+}
+
+export function updateJwtInfoApi(data) {
+    return Service.put("/api/settings/jwt", data)
+}

@@ -43,96 +43,102 @@ const data = reactive({
   menuList: [
     {
       id: 1,
-      icon: "fa-home", // icon的图片 统一用 fa
-      title: "首页", // 菜单名称
-      name: "home", // 路由名称
+      icon: "fa-home", 
+      title: "首页", 
+      name: "home", 
       children: []
     },
     {
       id: 3,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "用户列表", // 菜单名称
-      name: "user_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "用户列表", 
+      name: "user_list", 
       children: []
     },
     {
       id: 5,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "图片列表", // 菜单名称
-      name: "image_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "图片列表", 
+      name: "image_list", 
       children: []
     },
     {
       id: 7,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "广告列表", // 菜单名称
-      name: "advert_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "广告列表", 
+      name: "advert_list", 
       children: []
     },
     {
       id: 9,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "菜单列表", // 菜单名称
-      name: "menu_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "菜单列表", 
+      name: "menu_list", 
       children: []
     },
     {
       id: 11,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "日志列表", // 菜单名称
-      name: "log_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "日志列表", 
+      name: "log_list", 
       children: []
     },
     {
       id: 12,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "群聊消息", // 菜单名称
-      name: "chat_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "群聊消息", 
+      name: "chat_list", 
       children: []
     },
     {
       id: 13,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "消息列表", // 菜单名称
-      name: "message_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "消息列表", 
+      name: "message_list", 
       children: []
     },
     {
       id: 14,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "标签列表", // 菜单名称
-      name: "tag_list", // 路由名称
+      icon: "fa-user-circle", 
+      title: "标签列表", 
+      name: "tag_list", 
       children: []
     },
     {
       id: 15,
-      icon: "fa-user-circle", // icon的图片 统一用 fa
-      title: "系统管理", // 菜单名称
-      name: "", // 路由名称
+      icon: "fa-user-circle", 
+      title: "系统管理", 
+      name: "", 
       children: [
         {
           id: 16,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "网站设置", // 菜单名称
-          name: "system_site", // 路由名称
+          icon: "fa-user-circle", 
+          title: "网站设置", 
+          name: "system_site", 
         },
         {
           id: 17,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "邮箱设置", // 菜单名称
-          name: "system_email", // 路由名称
+          icon: "fa-user-circle", 
+          title: "邮箱设置", 
+          name: "system_email", 
         },
         {
           id: 18,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "七牛云设置", // 菜单名称
-          name: "system_qiniu", // 路由名称
+          icon: "fa-user-circle", 
+          title: "七牛云设置", 
+          name: "system_qiniu", 
         },
-          {
+        {
           id: 19,
-          icon: "fa-user-circle", // icon的图片 统一用 fa
-          title: "qq设置", // 菜单名称
-          name: "system_qq", // 路由名称
+          icon: "fa-user-circle", 
+          title: "qq设置", 
+          name: "system_qq", 
+        },
+        {
+          id: 20,
+          icon: "fa-user-circle", 
+          title: "jwt设置", 
+          name: "system_jwt",
         }
       ]
     },
@@ -148,7 +154,7 @@ function goto({item, key, keyPath}) {
     name: key.name,
     title: key.title,
   })
-  // 加入到 tabs
+  
   router.push({
     name: key.name
   })
@@ -172,7 +178,7 @@ function loadRoute(name) {
     for (const subMenu of menu.children) {
       if (subMenu.name === name) {
         selectedKeys.value = [subMenu]
-        // 找到id，展开对应的菜单
+        
         data.openKeys = [menu.id]
         return
       }

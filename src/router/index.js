@@ -88,6 +88,11 @@ const router = createRouter({
                             name: "system_qq",
                             component: () => import("../views/admin/system_mgr/qq_setting.vue")
                         },
+                          {
+                            path: "jwt",
+                            name: "system_jwt",
+                            component: () => import("../views/admin/system_mgr/jwt_setting.vue")
+                        },
                     ]
                 },
             ]
