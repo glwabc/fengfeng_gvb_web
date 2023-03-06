@@ -83,6 +83,11 @@ const router = createRouter({
                             name: "system_qiniu",
                             component: () => import("../views/admin/system_mgr/qiniu_setting.vue")
                         },
+                         {
+                            path: "qq",
+                            name: "system_qq",
+                            component: () => import("../views/admin/system_mgr/qq_setting.vue")
+                        },
                     ]
                 },
             ]

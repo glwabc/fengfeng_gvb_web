@@ -127,6 +127,12 @@ const data = reactive({
           icon: "fa-user-circle", // icon的图片 统一用 fa
           title: "七牛云设置", // 菜单名称
           name: "system_qiniu", // 路由名称
+        },
+          {
+          id: 19,
+          icon: "fa-user-circle", // icon的图片 统一用 fa
+          title: "qq设置", // 菜单名称
+          name: "system_qq", // 路由名称
         }
       ]
     },
