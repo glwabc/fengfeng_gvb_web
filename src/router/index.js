@@ -53,7 +53,7 @@ const router = createRouter({
                     name: "chat_list",
                     component: () => import("../views/admin/chat_list.vue")
                 },
-                 {
+                {
                     path: "message_list",
                     name: "message_list",
                     component: () => import("../views/admin/message_list.vue")
@@ -64,9 +64,15 @@ const router = createRouter({
                     component: () => import("../views/admin/tag_list.vue")
                 },
                 {
-                    path: "system_list",
-                    name: "system_list",
-                    component: () => import("../views/admin/system_mgr/system_list.vue")
+                    path: "system",
+                    name: "system",
+                    children: [
+                        {
+                            path: "site",
+                            name: "system_site",
+                            component: () => import("../views/admin/system_mgr/site_setting.vue")
+                        },
+                    ]
                 },
             ]
         }
