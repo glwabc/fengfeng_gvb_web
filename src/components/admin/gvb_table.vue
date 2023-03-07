@@ -212,8 +212,15 @@ function ExportList(params) {
     params = {}
   }
   page.page = 1
-  Object.assign(page, params)
-  getData(page)
+
+  // Object.assign(page, params)
+
+  let newPage = {
+
+  }
+  Object.assign(newPage, page)
+  Object.assign(newPage, params)
+  getData(newPage)
 }
 
 getData(page)

@@ -40,15 +40,40 @@
           </div>
         </template>
       </template>
+
+      <template #filters>
+        <a-select
+            class="gvb_select"
+            v-model:value="tag"
+            style="width: 200px"
+            allowClear
+            @change="onFilter"
+            :options="data.tagOptions"
+            placeholder="筛选文章标签"
+        ></a-select>
+        <a-select
+            class="gvb_select"
+            v-model:value="category"
+            style="width: 200px"
+            allowClear
+            @change="onFilter"
+            :options="data.categoryOptions"
+            placeholder="筛选文章分类"
+        ></a-select>
+      </template>
     </GVBTable>
   </div>
 </template>
 
 <script setup>
-
-import {reactive} from "vue";
+import {getTagNameListApi} from "@/api/tag_api";
+import {getCategoryListApi} from "@/api/article_api";
+import {reactive, ref} from "vue";
 import GVBTable from "@/components/admin/gvb_table.vue"
 
+const tag = ref(null)
+const category = ref(null)
+const gvbTable = ref(null)
 const data = reactive({
   list: [
     {
@@ -90,7 +115,9 @@ const data = reactive({
     {title: '标签', dataIndex: 'tags', key: 'tags'},
     {title: '发布时间', dataIndex: 'created_at', key: 'created_at'},
     {title: '操作', dataIndex: 'action', key: 'action'},
-  ]
+  ],
+  tagOptions: [],
+  categoryOptions: []
 })
 
 const colorList = ["red", "blue", "green", "purple", "cyan", "orange", "pink"]
@@ -99,6 +126,18 @@ function getColor(index) {
   return colorList[index]
 }
 
+function onFilter() {
+  gvbTable.value.ExportList({tag: tag.value, key: category.value})
+}
+
+async function getData() {
+  let res = await getTagNameListApi()
+  data.tagOptions = res.data
+  let c = await getCategoryListApi()
+  data.categoryOptions = c.data
+}
+
+getData()
 
 </script>
 
