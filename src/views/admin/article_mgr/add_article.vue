@@ -1,9 +1,9 @@
 <template>
-  <md-editor v-model="data.content" :theme="theme" @on-upload-img="onUploadImg"/>
+  <md-editor v-model="data.content" :theme="theme" @on-upload-img="onUploadImg" @on-save="onSave"/>
 </template>
 
 <script setup>
-import {reactive, ref, watch} from 'vue';
+import {reactive, ref, watch, onUnmounted} from 'vue';
 import {useStore} from "@/stores/store";
 import MdEditor from 'md-editor-v3';
 import {uploadImageApi} from "@/api/image_api";
@@ -28,6 +28,34 @@ const onUploadImg = async (files, callback) => {
       })
   );
   callback(res.map((item) => item.data));
+};
+
+function ctrlSave(e) {
+  if (e.ctrlKey && e.code === "KeyS") {
+    // 如何获取 md-editor 中的输入内容
+    // 阻止默认事件
+    showDrawer()
+    e.preventDefault()
+  }
+}
+
+function showDrawer() {
+  // 抽屉组件显示出来
+  console.log(data)
+}
+
+window.addEventListener("keydown", ctrlSave)
+onUnmounted(() => {
+  window.removeEventListener("keydown", ctrlSave)
+})
+// ctrl s， v 是md原文，h
+const onSave = (md, h) => {
+  // console.log(md);
+  showDrawer()
+
+  // h.then((html) => {
+  //   console.log(html);
+  // });
 };
 
 </script>
