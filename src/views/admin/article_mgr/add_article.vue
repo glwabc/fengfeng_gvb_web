@@ -1,15 +1,17 @@
 <template>
-  <md-editor v-model="data.content" :theme="theme"/>
+  <md-editor v-model="data.content" :theme="theme" @on-upload-img="onUploadImg"/>
 </template>
 
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {useStore} from "@/stores/store";
 import MdEditor from 'md-editor-v3';
+import {uploadImageApi} from "@/api/image_api";
 import 'md-editor-v3/lib/style.css';
 
 const store = useStore()
 const theme = ref("dark")
+import axios from "axios";
 
 const data = reactive({
   content: "hello fengfeng",
@@ -18,6 +20,15 @@ const data = reactive({
 watch(() => store.theme, (themeVal) => {
   theme.value = themeVal ? "" : "dark"
 }, {immediate: true}) // 初始化就执行回调
+
+const onUploadImg = async (files, callback) => {
+  const res = await Promise.all(
+      files.map((file) => {
+        return uploadImageApi(file)
+      })
+  );
+  callback(res.map((item) => item.data));
+};
 
 </script>
 
