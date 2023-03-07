@@ -105,6 +105,13 @@ const data = reactive({
       children: []
     },
     {
+      id: 22,
+      icon: "fa-user-circle",
+      title: "添加文章",
+      name: "add_article",
+      children: []
+    },
+    {
       id: 15,
       icon: "fa-user-circle",
       title: "标签列表",
