@@ -3,18 +3,25 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue';
+import {reactive, ref, watch} from 'vue';
+import {useStore} from "@/stores/store";
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 
+const store = useStore()
 const theme = ref("dark")
 
 const data = reactive({
   content: "hello fengfeng",
 })
+
+watch(() => store.theme, (themeVal) => {
+  theme.value = themeVal ? "" : "dark"
+}, {immediate: true}) // 初始化就执行回调
+
 </script>
 
-<style scoped>
+<style>
 .md-editor-dark {
   --md-color: #999;
   --md-hover-color: #bbb;
@@ -29,6 +36,10 @@ const data = reactive({
   --md-scrollbar-thumb-color: #2d2d2d;
   --md-scrollbar-thumb-hover-color: #3a3a3a;
   --md-scrollbar-thumb-active-color: #3a3a3a;
+}
+
+.md-editor {
+  height: calc(100vh - 130px);
 }
 </style>
 

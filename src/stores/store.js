@@ -4,7 +4,7 @@ import {message} from 'ant-design-vue';
 export const useStore = defineStore('gvb', {
     state: () => {
         return {
-            theme: true,
+            theme: true,  // true 白天  false 黑夜
             userInfo: {
                 token: "",
                 nick_name: '',
