@@ -43,101 +43,108 @@ const data = reactive({
   menuList: [
     {
       id: 1,
-      icon: "fa-home", 
-      title: "首页", 
-      name: "home", 
+      icon: "fa-home",
+      title: "首页",
+      name: "home",
       children: []
     },
     {
       id: 3,
-      icon: "fa-user-circle", 
-      title: "用户列表", 
-      name: "user_list", 
+      icon: "fa-user-circle",
+      title: "用户列表",
+      name: "user_list",
       children: []
     },
     {
       id: 5,
-      icon: "fa-user-circle", 
-      title: "图片列表", 
-      name: "image_list", 
+      icon: "fa-user-circle",
+      title: "图片列表",
+      name: "image_list",
       children: []
     },
     {
       id: 7,
-      icon: "fa-user-circle", 
-      title: "广告列表", 
-      name: "advert_list", 
+      icon: "fa-user-circle",
+      title: "广告列表",
+      name: "advert_list",
       children: []
     },
     {
       id: 9,
-      icon: "fa-user-circle", 
-      title: "菜单列表", 
-      name: "menu_list", 
+      icon: "fa-user-circle",
+      title: "菜单列表",
+      name: "menu_list",
       children: []
     },
     {
       id: 11,
-      icon: "fa-user-circle", 
-      title: "日志列表", 
-      name: "log_list", 
+      icon: "fa-user-circle",
+      title: "日志列表",
+      name: "log_list",
       children: []
     },
     {
       id: 12,
-      icon: "fa-user-circle", 
-      title: "群聊消息", 
-      name: "chat_list", 
+      icon: "fa-user-circle",
+      title: "群聊消息",
+      name: "chat_list",
       children: []
     },
     {
       id: 13,
-      icon: "fa-user-circle", 
-      title: "消息列表", 
-      name: "message_list", 
+      icon: "fa-user-circle",
+      title: "消息列表",
+      name: "message_list",
       children: []
     },
     {
       id: 14,
-      icon: "fa-user-circle", 
-      title: "标签列表", 
-      name: "tag_list", 
+      icon: "fa-user-circle",
+      title: "文章列表",
+      name: "article_list",
       children: []
     },
     {
       id: 15,
-      icon: "fa-user-circle", 
-      title: "系统管理", 
-      name: "", 
+      icon: "fa-user-circle",
+      title: "标签列表",
+      name: "tag_list",
+      children: []
+    },
+    {
+      id: 16,
+      icon: "fa-user-circle",
+      title: "系统管理",
+      name: "",
       children: [
         {
-          id: 16,
-          icon: "fa-user-circle", 
-          title: "网站设置", 
-          name: "system_site", 
-        },
-        {
           id: 17,
-          icon: "fa-user-circle", 
-          title: "邮箱设置", 
-          name: "system_email", 
+          icon: "fa-user-circle",
+          title: "网站设置",
+          name: "system_site",
         },
         {
           id: 18,
-          icon: "fa-user-circle", 
-          title: "七牛云设置", 
-          name: "system_qiniu", 
+          icon: "fa-user-circle",
+          title: "邮箱设置",
+          name: "system_email",
         },
         {
           id: 19,
-          icon: "fa-user-circle", 
-          title: "qq设置", 
-          name: "system_qq", 
+          icon: "fa-user-circle",
+          title: "七牛云设置",
+          name: "system_qiniu",
         },
         {
           id: 20,
-          icon: "fa-user-circle", 
-          title: "jwt设置", 
+          icon: "fa-user-circle",
+          title: "qq设置",
+          name: "system_qq",
+        },
+        {
+          id: 21,
+          icon: "fa-user-circle",
+          title: "jwt设置",
           name: "system_jwt",
         }
       ]
@@ -154,7 +161,7 @@ function goto({item, key, keyPath}) {
     name: key.name,
     title: key.title,
   })
-  
+
   router.push({
     name: key.name
   })
@@ -166,7 +173,6 @@ function onOpenChange(openKeys) {
 }
 
 function loadRoute(name) {
-  console.log(name)
   if (name === undefined) {
     name = route.name
   }
@@ -178,7 +184,7 @@ function loadRoute(name) {
     for (const subMenu of menu.children) {
       if (subMenu.name === name) {
         selectedKeys.value = [subMenu]
-        
+
         data.openKeys = [menu.id]
         return
       }
