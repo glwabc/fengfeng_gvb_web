@@ -48,8 +48,6 @@
             </template>
           </a-select>
         </a-form-item>
-
-
         <a-form-item label="原文地址">
           <a-input v-model:value="data.link" placeholder="原文地址"/>
         </a-form-item>
@@ -59,13 +57,13 @@
 
       </a-form>
     </a-modal>
-    <md-editor v-model="data.content" :theme="theme" @on-upload-img="onUploadImg" @on-save="onSave"/>
+    <md-editor ref="editorRef" v-model="data.content" :theme="theme" @on-upload-img="onUploadImg" @on-save="onSave"/>
   </div>
 
 </template>
 
 <script setup>
-import {reactive, ref, watch, onUnmounted} from 'vue';
+import {reactive, ref, watch, onUnmounted, onMounted} from 'vue';
 import {useStore} from "@/stores/store";
 import MdEditor from 'md-editor-v3';
 import {imageNameListApi, uploadImageApi} from "@/api/image_api";
@@ -80,6 +78,7 @@ const store = useStore()
 const theme = ref("dark")
 const visible = ref(false)
 const formRef = ref(null)
+const editorRef = ref(null)
 const initData = reactive({
   tagList: [],
   categoryList: [],
@@ -97,7 +96,11 @@ async function getData() {
   let t2 = await getCategoryListApi()
   initData.categoryList = t2.data
   let t3 = await imageNameListApi()
-  initData.bannerList = t3.data
+  const list = t3.data
+  initData.bannerList = list
+  // 随机选择一张封面
+  const banner = list[Math.floor(Math.random() * list.length)]
+  data.banner_id = banner.id
 }
 
 async function okHandler() {
@@ -112,24 +115,23 @@ async function okHandler() {
     return
   }
   message.success(res.msg)
+
   visible.value = false
   Object.assign(data, _data)
-  setTimeout(() => {
-    // 先切换到文章列表
-    router.push({
-      name: "article_list"
-    })
-    // 删除添加文章的tab
-    store.removeTab({name: "add_article"})
-  }, 1000)
-
+  // 先切换到文章列表
+  router.push({
+    name: "article_list"
+  })
+  // 删除添加文章的tab
+  store.removeTab({name: "add_article"})
   return
-
-
 }
 
 getData()
 
+onMounted(() => {
+  editorRef.value?.focus();
+})
 
 const _data = {
   content: "",
