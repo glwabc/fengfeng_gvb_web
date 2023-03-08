@@ -7,7 +7,7 @@
 
 <script setup>
 import {ref} from "vue";
-import GVModal from "@/views/test/gv_modal.vue"
+import GVModal from "@/test/gv_modal.vue"
 
 const visible = ref(false)
 

@@ -29,6 +29,9 @@ const emit = defineEmits(['update:content', "onSave"])
 watch(content, () => {
   emit('update:content', content.value)
 })
+watch(()=>props.content, ()=>{
+  content.value = props.content
+}, {immediate: true})
 
 watch(() => store.theme, (themeVal) => {
   theme.value = themeVal ? "" : "dark"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GVBEditor v-if="content" v-model:content="content" @onSave="onSave"></GVBEditor>
+    <GVBEditor v-model:content="content" @onSave="onSave"></GVBEditor>
   </div>
 
 </template>
@@ -48,7 +48,3 @@ async function onSave() {
 }
 
 </script>
-
-<style scoped>
-
-</style>

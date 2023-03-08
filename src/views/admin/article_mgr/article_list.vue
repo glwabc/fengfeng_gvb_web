@@ -168,11 +168,20 @@ function showEditArticleContentModal(record) {
     name: "edit_article",
     params: {
       id: record.id
+    },
+    query: {
+      title: record.title
     }
   })
-   store.addTab({
-    "name": "edit_article",
-    "title": "编辑文章"
+  store.addTab({
+    name: "edit_article",
+    title: "编辑文章",
+    params: {
+      id: record.id
+    },
+    query: {
+      title: record.title
+    }
   })
 }
 
