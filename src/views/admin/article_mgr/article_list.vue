@@ -8,7 +8,7 @@
         default-delete
     >
       <template #add>
-        <a-button type="primary">添加</a-button>
+        <a-button type="primary" @click="addArticle">添加</a-button>
       </template>
       <template #edit="{record}">
         <a-button type="primary">编辑</a-button>
@@ -21,7 +21,7 @@
           <span class="gvb_article_title" v-html="record.title"></span>
         </template>
         <template v-if="column.key === 'banner_url'">
-          <img :src="'/' + record.banner_url" alt="" height="60" style="border-radius: 5px">
+          <img :src="record.banner_url" alt="" height="60" style="border-radius: 5px">
         </template>
         <template v-if="column.key === 'data'">
           <div class="gvb_article_data">
@@ -70,7 +70,11 @@ import {getTagNameListApi} from "@/api/tag_api";
 import {getCategoryListApi} from "@/api/article_api";
 import {reactive, ref} from "vue";
 import GVBTable from "@/components/admin/gvb_table.vue"
+import {useRouter} from "vue-router";
+import {useStore} from "@/stores/store";
 
+const store = useStore()
+const router = useRouter()
 const tag = ref(null)
 const category = ref(null)
 const gvbTable = ref(null)
@@ -124,6 +128,17 @@ const colorList = ["red", "blue", "green", "purple", "cyan", "orange", "pink"]
 
 function getColor(index) {
   return colorList[index]
+}
+
+async function addArticle() {
+  await router.push({
+    name: "add_article"
+  })
+  store.addTab({
+    "name": "add_article",
+    "title": "添加文章"
+  })
+
 }
 
 function onFilter() {
