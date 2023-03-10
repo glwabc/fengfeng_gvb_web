@@ -17,3 +17,7 @@ export function sendEmailCodeApi(email) {
 export function bindEmailApi(data) {
     return Service.post("/api/user_bind_email", data)
 }
+
+export function updatePasswordApi(data){
+    return Service.put("/api/user_password", data)
+}

@@ -39,6 +39,29 @@
 
     </a-modal>
 
+    <a-modal title="修改密码" v-model:visible="updatePasswordVisible" @ok="updatePassword">
+      <a-form :model="pwdState"
+              name="basic"
+              ref="pwdFormRef"
+              :label-col="{ span: 4 }"
+              :wrapper-col="{ span: 20 }"
+              autocomplete="off">
+        <a-form-item label="原密码" name="old_pwd" has-feedback
+                     :rules="[{ required: true, message: '请输入原密码' }]">
+          <a-input v-model:value="pwdState.old_pwd" placeholder="原密码"></a-input>
+        </a-form-item>
+        <a-form-item label="新密码" name="pwd" has-feedback
+                     :rules="[{ required: true, message: '请输入新密码' }]">
+          <a-input v-model:value="pwdState.pwd" placeholder="新密码"></a-input>
+        </a-form-item>
+        <a-form-item label="确认密码" name="re_pwd" has-feedback
+                     :rules="[{ required: true, message: '请输入确认密码' }, {validator: validatePassword, message: '两次密码不一致', trigger: 'blur'}]">
+          <a-input v-model:value="pwdState.re_pwd" placeholder="确认密码"></a-input>
+        </a-form-item>
+      </a-form>
+
+    </a-modal>
+
     <div class="gvb_user_info_view">
       <div class="user_head">
         个人信息
@@ -121,8 +144,16 @@
       </div>
       <div class="body actions">
         <a-button type="primary" @click="bindEmailVisible=true">绑定邮箱</a-button>
-        <a-button type="primary">修改密码</a-button>
-        <a-button type="danger">注销退出</a-button>
+        <a-button type="primary" @click="updatePasswordVisible=true">修改密码</a-button>
+        <a-popconfirm
+            title="确定要注销退出吗"
+            ok-text="确定"
+            cancel-text="取消"
+            @confirm="logout"
+        >
+          <a-button type="danger">注销退出</a-button>
+        </a-popconfirm>
+
       </div>
     </div>
   </div>
@@ -130,8 +161,16 @@
 
 <script setup>
 import {reactive, ref} from "vue";
-import {getUserInfoApi, updateUserIngoApi, sendEmailCodeApi, bindEmailApi} from "@/api/user_center_api";
+import {
+  getUserInfoApi,
+  updateUserIngoApi,
+  sendEmailCodeApi,
+  bindEmailApi,
+  updatePasswordApi
+} from "@/api/user_center_api";
 import {message} from "ant-design-vue";
+import {useRouter} from "vue-router";
+import {logoutApi} from "@/api/user_api";
 
 const userInfo = reactive({
   addr: "",
@@ -148,7 +187,7 @@ const state = reactive({
   nick_name: "",
   sign: "",
 })
-
+const router = useRouter()
 
 const formState = reactive({
   email: "",
@@ -168,6 +207,14 @@ const step = ref(0)
 const bindEmailVisible = ref(false)
 const updatePasswordVisible = ref(false)
 const formRef = ref(null)
+const pwdFormRef = ref(null)
+const pwdState = reactive({
+  old_pwd: "",
+  pwd: "",
+  re_pwd: ""
+})
+
+
 async function getData() {
   let res = await getUserInfoApi()
   Object.assign(userInfo, res.data)
@@ -190,6 +237,12 @@ let validateEmail = async (_rule, value) => {
     return Promise.resolve();
   }
   return Promise.reject();
+}
+let validatePassword = async (_rule, value) => {
+  if (pwdState.re_pwd !== pwdState.pwd) {
+    return Promise.reject();
+  }
+  return Promise.resolve();
 }
 
 async function updateUserInfo(column) {
@@ -214,7 +267,7 @@ async function updateUserInfo(column) {
 async function sendEmailCode() {
   try {
     await formRef.value.validate()
-  }catch (e){
+  } catch (e) {
     return
   }
 
@@ -239,6 +292,35 @@ async function bindEmail() {
   step.value = 0
   bindEmailVisible.value = false
 
+}
+
+
+async function updatePassword() {
+  try {
+    await pwdFormRef.value.validate()
+  } catch (e) {
+    return
+  }
+  let res = await updatePasswordApi(pwdState)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  updatePasswordVisible.value = false
+  setTimeout(() => {
+    router.push({name: "login"})
+  }, 500)
+}
+
+async function logout() {
+  let res = await logoutApi()
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  await router.push({name: "login"})
 }
 
 getData()

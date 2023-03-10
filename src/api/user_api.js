@@ -6,6 +6,11 @@ export function emailLoginApi(data) {
     return Service.post("/api/email_login", data)
 }
 
+// 注销
+export function logoutApi() {
+    return Service.post("/api/logout")
+}
+
 // 用户列表
 export function userListApi(params) {
     return Service.get("/api/users", {params})
@@ -22,6 +27,6 @@ export function userRemoveBatchApi(id_list) {
 }
 
 // 修改用户权限和昵称
-export function updateUserNickNameApi(data){
+export function updateUserNickNameApi(data) {
     return Service.put("/api/user_role", data)
 }
