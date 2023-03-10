@@ -2,7 +2,7 @@
   <aside class="gvb_aside">
     <div class="gvb_aside_header flex">
       <div class="gvb_aside_logo flex">
-        <img src="http://www.fengfengzhidao.com/static/my/img/backend/slogan.png" alt="">
+        <img src="/slogan.png" alt="">
       </div>
       <div class="gvb_aside_title">枫枫知道后台系统</div>
     </div>

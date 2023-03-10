@@ -13,7 +13,7 @@ const router = createRouter({
             name: "ce",
             component: () => import("../test/t.vue")
         },
-          {
+        {
             path: "/x",
             name: "x",
             component: () => import("../test/x.vue")
@@ -32,6 +32,18 @@ const router = createRouter({
                     path: "home",
                     name: "home",
                     component: () => import("../views/admin/home/home.vue")
+                },
+                {
+                    path: "user_center",
+                    name: "user_center",
+                    redirect: "/admin/user_center/user_info",
+                    children: [
+                        {
+                            path: "user_info",
+                            name: "user_info",
+                            component: () => import("../views/admin/user_center/user_info.vue")
+                        }
+                    ]
                 },
                 {
                     path: "user_list",
@@ -98,7 +110,7 @@ const router = createRouter({
                             name: "system_site",
                             component: () => import("../views/admin/system_mgr/site_setting.vue")
                         },
-                         {
+                        {
                             path: "email",
                             name: "system_email",
                             component: () => import("../views/admin/system_mgr/email_setting.vue")
@@ -108,12 +120,12 @@ const router = createRouter({
                             name: "system_qiniu",
                             component: () => import("../views/admin/system_mgr/qiniu_setting.vue")
                         },
-                         {
+                        {
                             path: "qq",
                             name: "system_qq",
                             component: () => import("../views/admin/system_mgr/qq_setting.vue")
                         },
-                          {
+                        {
                             path: "jwt",
                             name: "system_jwt",
                             component: () => import("../views/admin/system_mgr/jwt_setting.vue")
