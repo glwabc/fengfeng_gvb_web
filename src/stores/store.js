@@ -68,12 +68,6 @@ export const useStore = defineStore('gvb', {
 
         // 添加tab
         addTab(tab) {
-            // 已经存在，就不要再添加了
-            // 不存在的时候，进行添加
-            // 判断长度
-            if (this.tabList.length >= 15) {
-                this.tabList.splice(1, 1)
-            }
             if (this.tabList.findIndex((item) => item.name === tab.name) === -1) {
                 this.tabList.push({name: tab.name, title: tab.title, params: tab.params, query: tab.query})
             }
@@ -97,6 +91,9 @@ export const useStore = defineStore('gvb', {
             let index = this.tabList.findIndex((item) => item.name === tab.name)
             this.tabList.splice(index, 1)
             return index
+        },
+        removeIndexTab(index) {
+            this.tabList.splice(index, 1)
         },
         // 移除全部tab
         removeTabAll() {

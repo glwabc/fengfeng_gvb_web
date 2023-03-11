@@ -21,6 +21,7 @@ import GVBAsideMenu from "./gvb_aside_menu.vue"
   width: 240px;
   height: 100vh;
   background-color: var(--slide);
+  overflow-y: auto;
 
   .gvb_aside_header {
     width: 100%;
