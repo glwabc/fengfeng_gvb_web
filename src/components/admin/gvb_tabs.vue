@@ -21,6 +21,7 @@ import {useRoute, useRouter} from "vue-router";
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+
 // 是否选中
 function isActive(item) {
   // 判断当前路由是否和item上的路由匹配
@@ -30,14 +31,23 @@ function isActive(item) {
   }
   return "gvb_tab_item"
 }
+
 // 切换路由
 function checkTab(item) {
+  if (item.parentTitle === undefined) {
+    store.setCrumb([])
+  } else {
+    store.setCrumb([item.parentTitle, item.title])
+  }
+
+
   router.push({
     name: item.name,
     params: item.params,
     query: item.query,
   })
 }
+
 // 移除tab
 function removeTab(item) {
   let index = store.removeTab(item)
@@ -54,6 +64,7 @@ function removeTab(item) {
     })
   }
 }
+
 // 关闭全部
 function removeTabAll() {
   store.removeTabAll()
@@ -61,8 +72,7 @@ function removeTabAll() {
     name: "home"
   })
 }
-// 加载路由
-store.loadTabs()
+
 // 监听刷新
 window.onbeforeunload = function () {
   // 保存

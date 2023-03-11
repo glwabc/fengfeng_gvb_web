@@ -187,27 +187,13 @@ const router = useRouter()
 const route = useRoute()
 
 function goto(item, parentItem) {
-  // 判断是否要删除第二个
-  // 总长度
-  let allLen = document.querySelector(".gvb_tabs").offsetWidth
-  // 使用的长度
-  let useLen = 0
-  let gvbItems = document.querySelectorAll(".gvb_tab_item")
-  for (const gvbItem of gvbItems) {
-    useLen += gvbItem.offsetWidth + 10
+  if (parentItem !== undefined) {
+    store.setCrumb([parentItem.title, item.title])
   }
-  if(allLen - useLen < 130){
-    store.removeIndexTab(1)
-  }
-  if (parentItem !== undefined){
-      store.setCrumb([parentItem.title, item.title])
-  }
-
-
-
   store.addTab({
     name: item.name,
     title: item.title,
+    parentTitle: parentItem?.title // 一级菜单的名称，如果为undefined，那么这个tab就是一级菜单
   })
 
   router.push({

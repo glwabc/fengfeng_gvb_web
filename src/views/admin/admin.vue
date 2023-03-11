@@ -37,6 +37,11 @@ import GVBUserInfo from "../../components/gvb_user_info.vue"
 import GVBTabs from "../../components/admin/gvb_tabs.vue"
 import GVBBreadCrumb from "@/components/admin/gvb_bread_crumb.vue"
 
+
+import {useStore} from "@/stores/store";
+const store = useStore()
+store.loadTabs()
+
 </script>
 
 <style lang="scss">

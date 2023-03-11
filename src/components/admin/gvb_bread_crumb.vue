@@ -8,11 +8,24 @@
 </template>
 
 <script setup>
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 import {useStore} from "@/stores/store";
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
+
+function loadData() {
+  let name = route.name
+  for (const tab of store.tabList) {
+    if (name === tab.name) {
+      store.setCrumb([tab.parentTitle, tab.title])
+    }
+  }
+}
+
+loadData()
+
 
 function goto(name) {
   router.push({
