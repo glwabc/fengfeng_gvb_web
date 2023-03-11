@@ -104,14 +104,7 @@ const data = reactive({
           title: "图片管理",
           name: "image_list",
           children: []
-        },
-        {
-          id: 34,
-          icon: "fa-tags",
-          title: "标签管理",
-          name: "tag_list",
-          children: []
-        },
+        }
       ]
     },
     {

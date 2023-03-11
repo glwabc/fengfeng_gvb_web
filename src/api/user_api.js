@@ -30,3 +30,11 @@ export function userRemoveBatchApi(id_list) {
 export function updateUserNickNameApi(data) {
     return Service.put("/api/user_role", data)
 }
+
+export function getQQLoginLinkApi() {
+    return Service.get("/api/qq_login_path")
+}
+
+export function qqLoginApi(code) {
+    return Service.post("/api/login?code=" + code)
+}
