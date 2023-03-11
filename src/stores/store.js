@@ -13,7 +13,8 @@ export const useStore = defineStore('gvb', {
                 avatar: '',
                 exp: 1677902977.84318
             },
-            tabList: []
+            tabList: [],
+            bread_crumb_list: []
         }
     },
     actions: {
@@ -98,6 +99,10 @@ export const useStore = defineStore('gvb', {
         // 移除全部tab
         removeTabAll() {
             this.tabList = [{title: "首页", name: "home"}]
+        },
+
+        setCrumb(list){
+            this.bread_crumb_list = list
         }
     }
 })

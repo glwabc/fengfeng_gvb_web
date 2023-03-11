@@ -18,7 +18,7 @@
           <i :class="'fa '+menu.icon"></i>
         </template>
         <template #title>{{ menu.title }}</template>
-        <a-menu-item v-for="sub_menu in menu.children" @click="goto(sub_menu)" :key="sub_menu.name">
+        <a-menu-item v-for="sub_menu in menu.children" @click="goto(sub_menu, menu)" :key="sub_menu.name">
           <template #icon>
             <i :class="'fa '+sub_menu.icon"></i>
           </template>
@@ -186,7 +186,7 @@ const selectedKeys = ref([])
 const router = useRouter()
 const route = useRoute()
 
-function goto(item) {
+function goto(item, parentItem) {
   // 判断是否要删除第二个
   // 总长度
   let allLen = document.querySelector(".gvb_tabs").offsetWidth
@@ -199,6 +199,11 @@ function goto(item) {
   if(allLen - useLen < 130){
     store.removeIndexTab(1)
   }
+  if (parentItem !== undefined){
+      store.setCrumb([parentItem.title, item.title])
+  }
+
+
 
   store.addTab({
     name: item.name,
