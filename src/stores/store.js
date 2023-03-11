@@ -70,9 +70,14 @@ export const useStore = defineStore('gvb', {
         addTab(tab) {
             // 已经存在，就不要再添加了
             // 不存在的时候，进行添加
+            // 判断长度
+            if (this.tabList.length >= 15) {
+                this.tabList.splice(1, 1)
+            }
             if (this.tabList.findIndex((item) => item.name === tab.name) === -1) {
                 this.tabList.push({name: tab.name, title: tab.title, params: tab.params, query: tab.query})
             }
+
         },
         // tabs的持久化存储
         saveTabs() {

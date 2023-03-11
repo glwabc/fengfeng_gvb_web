@@ -3,6 +3,7 @@
       v-model:selectedKeys="selectedKeys"
       :open-keys="data.openKeys"
       mode="inline"
+      @openChange="onOpenChange"
       :inline-collapsed="false"
   >
     <template v-for="menu in data.menuList" :key="menu.name">
@@ -194,6 +195,11 @@ function goto(item) {
   router.push({
     name: item.name
   })
+}
+
+function onOpenChange(openKeys) {
+  const latestOpenKey = openKeys.find(key => data.openKeys.indexOf(key) === -1);
+  data.openKeys = latestOpenKey ? [latestOpenKey] : [];
 }
 
 function loadRoute(name) {
