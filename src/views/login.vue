@@ -67,12 +67,12 @@ async function emailLogin() {
   if (redirect_url === undefined) {
     setTimeout(() => {
       router.push({name: "home"})
-    }, 1000)
+    }, 200)
     return
   }
   setTimeout(() => {
       router.push({path: redirect_url})
-    }, 1000)
+    }, 200)
 
   return
 

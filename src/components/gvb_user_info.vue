@@ -1,29 +1,21 @@
 <template>
   <div class="gvb_user_info">
     <div class="avatar" v-if="props.isAvatar">
-      <img src="http://blog.fengfengzhidao.com/uploads/file/avatar/%E5%A4%B4%E5%83%8F_0006_23.jpg" alt="">
+      <img :src="store.userInfo.avatar" alt="">
     </div>
     <div class="drop_menu">
       <a-dropdown placement="bottomRight">
         <a class="ant-dropdown-link" @click.prevent>
-          枫枫知道
+          {{ store.userInfo.nick_name }}
           <i class="fa fa-angle-down"></i>
         </a>
         <template #overlay>
-          <a-menu @click="menuClick">
-            <a-menu-item key="user_center">
-              <a href="javascript:;">个人中心</a>
+          <a-menu>
+            <a-menu-item v-for="(item,index) in data.menu_list" @click="goto(item)">
+              <a href="javascript:void (0)">{{ item.title }}</a>
             </a-menu-item>
-            <a-menu-item key="my_messages">
-              <a href="javascript:;">我的消息</a>
-            </a-menu-item>
-            <a-menu-item key="article_list">
-              <a href="javascript:;">文章列表</a>
-            </a-menu-item>
-            <a-menu-item key="login">
-              <a href="javascript:;">用户登录</a>
-            </a-menu-item>
-            <a-menu-item key="logout">
+            <a-menu-divider/>
+            <a-menu-item @click="logout">
               <a href="javascript:;">注销退出</a>
             </a-menu-item>
           </a-menu>
@@ -37,10 +29,12 @@
 import {useRoute, useRouter} from "vue-router"
 import {logoutApi} from "@/api/user_api";
 import {message} from "ant-design-vue";
+import {useStore} from "@/stores/store";
+import {reactive} from "vue";
 
 const router = useRouter()
 const route = useRoute()
-
+const store = useStore()
 const props = defineProps({
   // 是否显示头像部分
   isAvatar: {
@@ -48,6 +42,27 @@ const props = defineProps({
     default: false,
   }
 })
+
+const data = reactive({
+  menu_list: [
+    {
+      title: "我的信息",
+      name: "user_info",
+      parentTitle: "个人中心",
+    },
+    {
+      title: "我的收藏",
+      name: "user_collects",
+      parentTitle: "个人中心",
+    },
+    {
+      title: "我的消息",
+      name: "user_messages",
+      parentTitle: "个人中心",
+    },
+  ]
+})
+
 
 async function menuClick({key}) {
   if (key === "logout") {
@@ -73,6 +88,29 @@ async function menuClick({key}) {
     name: key,
   })
 
+}
+
+function goto(item) {
+  store.setCrumb([item.parentTitle, item.title])
+  store.addTab({
+    name: item.name,
+    title: item.title,
+    parentTitle: item.parentTitle // 一级菜单的名称，如果为undefined，那么这个tab就是一级菜单
+  })
+  router.push({
+    name: item.name
+  })
+}
+
+async function logout() {
+  let res = await logoutApi()
+  if (res.code) {
+    message.error(res.msg)
+  } else {
+    message.success(res.msg)
+  }
+  await router.push({name: 'login'})
+  return
 }
 
 
