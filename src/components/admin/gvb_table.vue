@@ -25,9 +25,9 @@
       <a-spin :spinning="data.spinning" tip="加载中..." :delay="300">
         <a-table
             :columns="props.columns"
-            :row-selection="{
+            :row-selection="props.isSelect ? {
             selectedRowKeys: data.selectedRowKeys,
-            onChange: onSelectChange }"
+            onChange: onSelectChange } : undefined"
             :pagination="false"
             row-key="id"
             :data-source="data.list">
@@ -97,6 +97,10 @@ const props = defineProps({
     default: true
   },
   isDelete: {
+    type: Boolean,
+    default: true
+  },
+  isSelect: {
     type: Boolean,
     default: true
   },
@@ -170,6 +174,12 @@ async function getData(params) {
   }
   data.spinning = true
   let res = await baseListApi(props.baseUrl, params)
+  data.spinning = false
+  if (res.data.list === undefined) {
+    data.list = res.data
+    data.count = res.data.length
+    return
+  }
   data.list = res.data.list
   data.count = res.data.count
   data.spinning = false
@@ -215,9 +225,7 @@ function ExportList(params) {
 
   // Object.assign(page, params)
 
-  let newPage = {
-
-  }
+  let newPage = {}
   Object.assign(newPage, page)
   Object.assign(newPage, params)
   getData(newPage)
