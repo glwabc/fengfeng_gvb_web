@@ -119,6 +119,7 @@ const router = createRouter({
                     path: "system",
                     name: "system",
                     component: () => import("@/views/admin/system_mgr/system_base.vue"),
+                    redirect:"/admin/system/site",
                     children: [
                         {
                             path: "site",

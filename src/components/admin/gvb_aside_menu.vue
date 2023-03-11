@@ -49,32 +49,32 @@ const data = reactive({
       children: []
     },
     {
-      id: 23,
-      icon: "fa-home",
+      id: 2,
+      icon: "fa-user-circle-o",
       title: "个人中心",
       name: "user_center",
       children: [
         {
-          id: 24,
-          icon: "fa-home",
+          id: 21,
+          icon: "fa-vcard",
           title: "我的信息",
           name: "user_info",
         },
         {
-          id: 25,
-          icon: "fa-home",
+          id: 22,
+          icon: "fa-user-plus",
           title: "我的发布",
           name: "user_article_list",
         },
         {
-          id: 26,
-          icon: "fa-home",
+          id: 23,
+          icon: "fa-heart",
           title: "我的收藏",
           name: "user_collects",
         },
-          {
-          id: 27,
-          icon: "fa-home",
+        {
+          id: 24,
+          icon: "fa-desktop",
           title: "我的消息",
           name: "user_messages",
         }
@@ -82,110 +82,103 @@ const data = reactive({
     },
     {
       id: 3,
-      icon: "fa-user-circle",
-      title: "用户列表",
-      name: "user_list",
-      children: []
+      icon: "fa-book",
+      title: "文图管理",
+      name: "",
+      children: [
+        {
+          id: 31,
+          icon: "fa-graduation-cap",
+          title: "添加文章",
+          name: "add_article",
+          children: []
+        },
+        {
+          id: 32,
+          icon: "fa-gift",
+          title: "文章管理",
+          name: "article_list",
+          children: []
+        },
+        {
+          id: 33,
+          icon: "fa-file-image-o",
+          title: "图片管理",
+          name: "image_list",
+          children: []
+        },
+        {
+          id: 34,
+          icon: "fa-tags",
+          title: "标签管理",
+          name: "tag_list",
+          children: []
+        },
+      ]
+    },
+    {
+      id: 4,
+      icon: "fa-male",
+      title: "用户管理",
+      name: "",
+      children: [
+        {
+          id: 41,
+          icon: "fa-users",
+          title: "用户列表",
+          name: "user_list",
+          children: []
+        },
+        {
+          id: 42,
+          icon: "fa-group",
+          title: "群聊消息",
+          name: "chat_list",
+          children: []
+        },
+        {
+          id: 43,
+          icon: "fa-user-circle",
+          title: "消息列表",
+          name: "message_list",
+          children: []
+        },
+      ]
     },
     {
       id: 5,
-      icon: "fa-user-circle",
-      title: "图片列表",
-      name: "image_list",
-      children: []
-    },
-    {
-      id: 7,
-      icon: "fa-user-circle",
-      title: "广告列表",
-      name: "advert_list",
-      children: []
-    },
-    {
-      id: 9,
-      icon: "fa-user-circle",
-      title: "菜单列表",
-      name: "menu_list",
-      children: []
-    },
-    {
-      id: 11,
-      icon: "fa-user-circle",
-      title: "日志列表",
-      name: "log_list",
-      children: []
-    },
-    {
-      id: 12,
-      icon: "fa-user-circle",
-      title: "群聊消息",
-      name: "chat_list",
-      children: []
-    },
-    {
-      id: 13,
-      icon: "fa-user-circle",
-      title: "消息列表",
-      name: "message_list",
-      children: []
-    },
-    {
-      id: 14,
-      icon: "fa-user-circle",
-      title: "文章列表",
-      name: "article_list",
-      children: []
-    },
-    {
-      id: 22,
-      icon: "fa-user-circle",
-      title: "添加文章",
-      name: "add_article",
-      children: []
-    },
-    {
-      id: 15,
-      icon: "fa-user-circle",
-      title: "标签列表",
-      name: "tag_list",
-      children: []
-    },
-    {
-      id: 16,
-      icon: "fa-user-circle",
+      icon: "fa-cogs",
       title: "系统管理",
       name: "",
       children: [
         {
-          id: 17,
-          icon: "fa-user-circle",
-          title: "网站设置",
-          name: "system_site",
+          id: 51,
+          icon: "fa-tree",
+          title: "菜单列表",
+          name: "menu_list",
+          children: []
         },
         {
-          id: 18,
-          icon: "fa-user-circle",
-          title: "邮箱设置",
-          name: "system_email",
+          id: 52,
+          icon: "fa-sun-o",
+          title: "广告列表",
+          name: "advert_list",
+          children: []
+        },
+
+        {
+          id: 53,
+          icon: "fa-server",
+          title: "系统日志",
+          name: "log_list",
+          children: []
         },
         {
-          id: 19,
-          icon: "fa-user-circle",
-          title: "七牛云设置",
-          name: "system_qiniu",
+          id: 54,
+          icon: "fa-globe",
+          title: "项目配置",
+          name: "system",
         },
-        {
-          id: 20,
-          icon: "fa-user-circle",
-          title: "qq设置",
-          name: "system_qq",
-        },
-        {
-          id: 21,
-          icon: "fa-user-circle",
-          title: "jwt设置",
-          name: "system_jwt",
-        }
       ]
     },
   ],
