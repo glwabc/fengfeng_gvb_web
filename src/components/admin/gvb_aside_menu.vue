@@ -1,26 +1,23 @@
 <template>
   <a-menu
       v-model:selectedKeys="selectedKeys"
-      mode="inline"
-      multiple
-      :inline-collapsed="false"
-      @click="goto"
-      @openChange="onOpenChange"
       :open-keys="data.openKeys"
+      mode="inline"
+      :inline-collapsed="false"
   >
     <template v-for="menu in data.menuList" :key="menu.name">
-      <a-menu-item :key="menu" v-if="menu.children.length === 0">
+      <a-menu-item :key="menu.name" v-if="menu.children.length === 0" @click="goto(menu)">
         <template #icon>
           <i :class="'fa '+menu.icon"></i>
         </template>
         <span>{{ menu.title }}</span>
       </a-menu-item>
-      <a-sub-menu :key="menu.id" v-else>
+      <a-sub-menu :key="menu.name" v-else>
         <template #icon>
           <i :class="'fa '+menu.icon"></i>
         </template>
         <template #title>{{ menu.title }}</template>
-        <a-menu-item v-for="sub_menu in menu.children" :key="sub_menu">
+        <a-menu-item v-for="sub_menu in menu.children" @click="goto(sub_menu)" :key="sub_menu.name">
           <template #icon>
             <i :class="'fa '+sub_menu.icon"></i>
           </template>
@@ -84,7 +81,7 @@ const data = reactive({
       id: 3,
       icon: "fa-book",
       title: "文图管理",
-      name: "",
+      name: "wen_tu",
       children: [
         {
           id: 31,
@@ -120,7 +117,7 @@ const data = reactive({
       id: 4,
       icon: "fa-male",
       title: "用户管理",
-      name: "",
+      name: "users",
       children: [
         {
           id: 41,
@@ -149,7 +146,7 @@ const data = reactive({
       id: 5,
       icon: "fa-cogs",
       title: "系统管理",
-      name: "",
+      name: "sys",
       children: [
         {
           id: 51,
@@ -188,36 +185,28 @@ const selectedKeys = ref([])
 const router = useRouter()
 const route = useRoute()
 
-function goto({item, key, keyPath}) {
+function goto(item) {
   store.addTab({
-    name: key.name,
-    title: key.title,
+    name: item.name,
+    title: item.title,
   })
 
   router.push({
-    name: key.name
+    name: item.name
   })
 }
 
-function onOpenChange(openKeys) {
-  const latestOpenKey = openKeys.find(key => data.openKeys.indexOf(key) === -1);
-  data.openKeys = latestOpenKey ? [latestOpenKey] : [];
-}
-
 function loadRoute(name) {
-  if (name === undefined) {
-    name = route.name
-  }
   for (const menu of data.menuList) {
     if (menu.name === name) {
-      selectedKeys.value = [menu]
+      selectedKeys.value = [menu.name]
       return
     }
     for (const subMenu of menu.children) {
       if (subMenu.name === name) {
-        selectedKeys.value = [subMenu]
+        selectedKeys.value = [subMenu.name]
 
-        data.openKeys = [menu.id]
+        data.openKeys = [menu.name]
         return
       }
     }
@@ -229,7 +218,7 @@ onBeforeRouteUpdate((to, from, next) => {
   next()
 })
 
-loadRoute()
+loadRoute(route.name)
 
 </script>
 
