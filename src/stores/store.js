@@ -8,7 +8,7 @@ export const useStore = defineStore('gvb', {
             userInfo: {
                 token: "",
                 nick_name: '',
-                role: 0,
+                role: 0, // 1 管理员  2 普通用户  3 游客
                 user_id: 0,
                 avatar: '',
                 exp: 1677902977.84318

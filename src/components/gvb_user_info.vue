@@ -11,9 +11,12 @@
         </a>
         <template #overlay>
           <a-menu>
-            <a-menu-item v-for="(item,index) in data.menu_list" @click="goto(item)">
-              <a href="javascript:void (0)">{{ item.title }}</a>
-            </a-menu-item>
+            <template v-for="(item,index) in data.menu_list" :key="index">
+              <a-menu-item v-if="item.title !== 'line'" @click="goto(item)">
+                <a href="javascript:void (0)">{{ item.title }}</a>
+              </a-menu-item>
+              <a-menu-divider v-else/>
+            </template>
             <a-menu-divider/>
             <a-menu-item @click="logout">
               <a href="javascript:;">注销退出</a>
@@ -62,6 +65,32 @@ const data = reactive({
     },
   ]
 })
+
+if (store.userInfo.role === 1 || store.userInfo.role === 3) {
+  data.menu_list.push({
+    title: "line",
+  })
+  data.menu_list.push({
+    title: "添加文章",
+    name: "add_article",
+    parentTitle: "文图管理",
+  })
+  data.menu_list.push({
+    title: "文章管理",
+    name: "article_list",
+    parentTitle: "文图管理",
+  })
+  data.menu_list.push({
+    title: "用户列表",
+    name: "user_list",
+    parentTitle: "用户管理",
+  })
+  data.menu_list.push({
+    title: "系统日志",
+    name: "log_list",
+    parentTitle: "系统管理",
+  })
+}
 
 
 async function menuClick({key}) {
