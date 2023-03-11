@@ -17,7 +17,17 @@ export function sendEmailCodeApi(email) {
 export function bindEmailApi(data) {
     return Service.post("/api/user_bind_email", data)
 }
-
+// 用户修改密码
 export function updatePasswordApi(data){
     return Service.put("/api/user_password", data)
+}
+
+// 登录人与用户的聊天记录
+export function getMessageRecordApi(user_id){
+    return Service.post("/api/messages_record", {user_id})
+}
+
+// 发送消息
+export function messageApi(data){
+    return Service.post("/api/messages", data)
 }
