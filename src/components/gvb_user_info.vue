@@ -92,31 +92,14 @@ if (store.userInfo.role === 1 || store.userInfo.role === 3) {
   })
 }
 
-
-async function menuClick({key}) {
-  if (key === "logout") {
-    let res = await logoutApi()
-    if (res.code) {
-      message.error(res.msg)
-    } else {
-      message.success(res.msg)
-    }
-    router.push({name: 'login'})
-    return
-  }
-  if (key === "login") {
-    router.push({
-      name: key,
-      query: {
-        redirect_url: route.path
-      }
-    })
-    return;
-  }
+function goLogin() {
   router.push({
-    name: key,
+    name: "login",
+    query: {
+      redirect_url: route.path
+    }
   })
-
+  localStorage.setItem("redirect_url", route.path)
 }
 
 function goto(item) {

@@ -79,6 +79,7 @@ async function emailLogin() {
 
 }
 
+// 获取qq登录的地址
 async function getQQLogin() {
   let res = await getQQLoginLinkApi()
   if (res.code) {
@@ -88,9 +89,10 @@ async function getQQLogin() {
   location.href = res.data
 }
 
-
+// QQ登录
 async function qqLogin() {
   const query = route.query
+  // 判断是不是qq登录的请求
   if (query.flag !== 'qq') {
     return
   }
@@ -104,8 +106,9 @@ async function qqLogin() {
   let userInfo = parseToken(res.data)
   userInfo.token = res.data
   store.setUserInfo(userInfo)
-  const redirect_url = route.query.redirect_url
-  if (redirect_url === undefined) {
+
+  let redirect_url = localStorage.getItem("redirect_url")
+  if (redirect_url === null) {
     setTimeout(() => {
       router.push({name: "home"})
     }, 200)
@@ -113,6 +116,7 @@ async function qqLogin() {
   }
   setTimeout(() => {
     router.push({path: redirect_url})
+    localStorage.removeItem("redirect_url")
   }, 200)
 }
 
