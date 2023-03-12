@@ -104,6 +104,13 @@ const data = reactive({
           title: "图片管理",
           name: "image_list",
           children: []
+        },
+          {
+          id: 34,
+          icon: "fa-comment",
+          title: "评论管理",
+          name: "comment_list",
+          children: []
         }
       ]
     },
