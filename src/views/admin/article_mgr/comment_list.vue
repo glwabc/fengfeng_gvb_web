@@ -1,5 +1,34 @@
 <template>
   <div>
+    <a-modal title="发布评论" v-model:visible="data.visible" @ok="okHandler">
+      <a-form :model="data.state"
+              name="basic"
+              ref="formRef"
+              :label-col="{ span: 4 }"
+              :wrapper-col="{ span: 20 }"
+              autocomplete="off"
+      >
+        <a-form-item label="文章" name="article_id" has-feedback
+                     :rules="[{ required: true, message: '请选择文章' ,trigger: 'blur'}]">
+          <a-select
+              class="gvb_select"
+              v-model:value="data.state.article_id"
+              style="width: 200px"
+              allowClear
+              :options="data.articleIDTitleList"
+              placeholder="选择文章"
+          ></a-select>
+        </a-form-item>
+        <a-form-item label="评论内容" name="content" has-feedback
+                     :rules="[{ required: true, message: '请输入评论内容' ,trigger: 'blur'}]">
+          <a-textarea placeholder="评论内容" v-model:value="data.state.content"
+                      class="user_ipt" :auto-size="{ minRows: 2, maxRows: 5 }"></a-textarea>
+        </a-form-item>
+        <a-form-item label="父评论id" name="parent_comment_id" has-feedback>
+          <a-input-number placeholder="父评论id" v-model:value="data.state.parent_comment_id"></a-input-number>
+        </a-form-item>
+      </a-form>
+    </a-modal>
     <GVBTable
         :columns="data.columns"
         base-url="/api/comments"
@@ -8,7 +37,7 @@
         default-delete
     >
       <template #add>
-        <a-button type="primary">添加</a-button>
+        <a-button type="primary" @click="showModal">添加</a-button>
       </template>
       <template #edit="{record}">
 
@@ -36,12 +65,13 @@
 import {reactive, ref} from "vue";
 import GVBTable from "@/components/admin/gvb_table.vue"
 import {useRouter} from "vue-router";
-import {commentRemoveApi} from "@/api/comment_apii";
+import {commentRemoveApi, commentCreateApi} from "@/api/comment_api";
 import {message} from "ant-design-vue";
+import {getArticleIDTitle} from "@/api/article_api";
 
 const router = useRouter()
 const gvbTable = ref(null)
-
+const formRef = ref(null)
 const data = reactive({
   list: [],
   columns: [
@@ -56,10 +86,18 @@ const data = reactive({
     {title: '评论时间', dataIndex: 'created_at', key: 'created_at'},
     {title: '操作', dataIndex: 'action', key: 'action'},
   ],
+  visible: false,
+  state: {
+    article_id: null,
+    content: "",
+    parent_comment_id: null
+  },
+  articleIDTitleList: []
 })
-async function commentRemove(record){
+
+async function commentRemove(record) {
   let res = await commentRemoveApi(record.id)
-  if (res.code){
+  if (res.code) {
     message.error(res.msg)
     return
   }
@@ -68,6 +106,32 @@ async function commentRemove(record){
   return
 }
 
+function showModal() {
+  getData()
+  data.visible = true
+}
+
+async function getData() {
+  let t1 = await getArticleIDTitle()
+  data.articleIDTitleList = t1.data
+}
+
+async function okHandler() {
+  try {
+    await formRef.value.validate()
+  } catch (e) {
+    return
+  }
+  let res = await commentCreateApi(data.state)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  data.state.content = ""
+  data.visible = false
+  gvbTable.value.ExportList()
+}
 </script>
 
 <style lang="scss">
