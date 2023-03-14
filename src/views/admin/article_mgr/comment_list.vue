@@ -33,7 +33,10 @@
         :columns="data.columns"
         base-url="/api/comments"
         like-title="搜索评论内容"
+        :is-batch-delete="false"
         ref="gvbTable"
+        :is-edit="false"
+        :is-select="false"
         default-delete
     >
       <template #add>
@@ -45,6 +48,11 @@
       <template #cell="{column, record, index }">
         <template v-if="column.key === 'article_banner'">
           <img :src="record.article_banner" alt="" height="60" style="border-radius: 5px">
+        </template>
+         <template v-if="column.key === 'parent_comment_id'">
+          <a-tag v-if="record.parent_comment_id === null" color="red">
+            根评论
+          </a-tag>
         </template>
       </template>
       <template #delete="{record}">
