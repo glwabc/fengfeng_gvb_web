@@ -14,10 +14,7 @@
     <div class="gvb_data_charts">
       <div class="left">
         <div class="article_calendar">
-          <div class="title">
-            文章日历
-          </div>
-          <ArticleCalendar/>
+          <ArticleCalendar :is-title="true"/>
         </div>
       </div>
       <div class="right">
@@ -125,12 +122,12 @@ const data = reactive({
   margin-top: 20px;
 
   .left {
-    width: 780px;
+    width: 800px;
     margin-right: 20px;
   }
 
   .right {
-    width: calc(100% - 780px);
+    width: calc(100% - 800px);
   }
 
   .article_calendar {
