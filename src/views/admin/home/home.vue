@@ -21,6 +21,9 @@
         </div>
       </div>
       <div class="right">
+        <div class="week_data">
+          <WeekChat/>
+        </div>
 
       </div>
     </div>
@@ -30,8 +33,9 @@
 
 <script setup>
 import {reactive} from "vue";
-import ArticleCalendar from "@/components/article_calendar.vue"
+import ArticleCalendar from "@/components/charts/article_calendar.vue"
 import {useStore} from "@/stores/store";
+import WeekChat from "@/components/charts/week_chart.vue"
 
 const store = useStore()
 
@@ -125,12 +129,26 @@ const data = reactive({
     margin-right: 20px;
   }
 
+  .right {
+    width: calc(100% - 780px);
+  }
+
   .article_calendar {
     background-color: var(--card_bg);
     padding: 10px 20px;
     border: 1px solid var(--card_boder);
     border-radius: 5px;
   }
+
+  .week_data {
+    background-color: var(--card_bg);
+    padding: 10px 20px;
+    border: 1px solid var(--card_boder);
+    border-radius: 5px;
+  }
+
+
+
 
 }
 </style>
