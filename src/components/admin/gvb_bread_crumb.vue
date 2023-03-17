@@ -36,7 +36,3 @@ function goto(name) {
   })
 }
 </script>
-
-<style scoped>
-
-</style>
