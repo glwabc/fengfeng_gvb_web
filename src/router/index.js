@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {useStore} from "@/stores/store";
+import {message} from "ant-design-vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,19 +11,12 @@ const router = createRouter({
             component: () => import("../views/login.vue")
         },
         {
-            path: "/ce",
-            name: "ce",
-            component: () => import("../test/t.vue")
-        },
-        {
-            path: "/x",
-            name: "x",
-            component: () => import("../test/x.vue")
-        },
-        {
             path: "/admin",
             name: "admin",
             component: () => import("../views/admin/admin.vue"),
+            meta: {
+                is_login: true,
+            },
             children: [
                 {
                     path: "",
@@ -48,12 +43,12 @@ const router = createRouter({
                             name: "user_article_list",
                             component: () => import("../views/admin/user_center/user_create_article_list.vue")
                         },
-                         {
+                        {
                             path: "user_collects",
                             name: "user_collects",
                             component: () => import("../views/admin/user_center/user_collects.vue")
                         },
-                         {
+                        {
                             path: "user_messages",
                             name: "user_messages",
                             component: () => import("../views/admin/user_center/user_messages.vue")
@@ -124,7 +119,7 @@ const router = createRouter({
                     path: "system",
                     name: "system",
                     component: () => import("@/views/admin/system_mgr/system_base.vue"),
-                    redirect:"/admin/system/site",
+                    redirect: "/admin/system/site",
                     children: [
                         {
                             path: "site",
@@ -159,3 +154,16 @@ const router = createRouter({
 })
 
 export default router
+
+// 路由前置守卫
+router.beforeEach((to, from, next) => {
+    const store = useStore()
+    // 也可以请求一下后端的权限api
+    if (to.meta.is_login && store.userInfo.role === 0) {
+        message.warn("需要登录")
+        router.push({name: "login"})
+        return
+    }
+    // 放行
+    next()
+})
