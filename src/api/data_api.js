@@ -14,3 +14,21 @@ export function getWeekDataApi(){
      */
     return Service.get("/api/data_login")
 }
+
+export function getSumDataApi(){
+    /*
+{
+  "code": 0,
+  "data": {
+    "user_count": 6,
+    "article_count": 9,
+    "message_count": 11,
+    "chat_group_count": 14,
+    "now_login_count": 1,
+    "now_sign_count": 0
+  },
+  "msg": "成功"
+}
+*/
+    return Service.get("/api/data_sum")
+}
