@@ -137,7 +137,7 @@ export const useStore = defineStore('gvb', {
 
         clear() {
             this.userInfo = data
-            this.tabList = []
+            this.tabList = [{title: "首页", name: "home"}]
             this.bread_crumb_list = []
             localStorage.clear()
         }
