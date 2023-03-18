@@ -2,10 +2,10 @@
   <div class="gvb_settings_bg">
     <div class="gvb_sub_menu">
       <a :class="{active: active==='system_site'}" href="javascript:void (0)" @click="goto('system_site', '网站设置')">网站设置</a>
-      <a :class="{active: active==='system_email'}" href="javascript:void (0)" @click="goto('system_email', '邮箱设置')">邮箱设置</a>
-      <a :class="{active: active==='system_qiniu'}" href="javascript:void (0)" @click="goto('system_qiniu', '七牛云设置')">七牛云设置</a>
-      <a :class="{active: active==='system_qq'}" href="javascript:void (0)" @click="goto('system_qq', 'qq设置')">qq设置</a>
-      <a :class="{active: active==='system_jwt'}" href="javascript:void (0)" @click="goto('system_jwt', 'jwt设置')">jwt设置</a>
+      <a :class="{active: active==='system_email'}" v-if="isShow" href="javascript:void (0)" @click="goto('system_email', '邮箱设置')">邮箱设置</a>
+      <a :class="{active: active==='system_qiniu'}" v-if="isShow" href="javascript:void (0)" @click="goto('system_qiniu', '七牛云设置')">七牛云设置</a>
+      <a :class="{active: active==='system_qq'}" v-if="isShow" href="javascript:void (0)" @click="goto('system_qq', 'qq设置')">qq设置</a>
+      <a :class="{active: active==='system_jwt'}" v-if="isShow" href="javascript:void (0)" @click="goto('system_jwt', 'jwt设置')">jwt设置</a>
     </div>
     <router-view v-slot="{Component}">
       <transition name="fade" mode="out-in">
@@ -25,6 +25,8 @@ const router = useRouter()
 const route = useRoute()
 const store = useStore()
 const active = ref(route.name)
+const isShow = ref(store.userInfo.role === 1)
+
 
 function goto(routerName, title) {
   router.push({

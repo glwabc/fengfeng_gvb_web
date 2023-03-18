@@ -68,7 +68,6 @@
         base-url="/api/users"
         like-title="搜索用户昵称"
         ref="gvbTable"
-        :page-size="5"
     >
       <template #add>
         <a-button type="primary" @click="data.modalVisible = true">添加</a-button>
@@ -83,14 +82,14 @@
       </template>
       <template #filters>
         <a-select
-          class="gvb_select"
-          v-model:value="filter"
-          style="width: 200px"
-          allowClear
-          @change="onFilter"
-          :options="roleOptions"
-          placeholder="选择权限"
-      ></a-select>
+            class="gvb_select"
+            v-model:value="filter"
+            style="width: 200px"
+            allowClear
+            @change="onFilter"
+            :options="roleOptions"
+            placeholder="选择权限"
+        ></a-select>
       </template>
     </GVBTable>
   </div>
@@ -151,7 +150,8 @@ const formUpdateState = reactive({
 })
 
 const filter = ref(undefined)
-function onFilter(){
+
+function onFilter() {
   gvbTable.value.ExportList({role: filter.value})
 }
 
@@ -189,21 +189,20 @@ function updateModal(record) {
 async function handleOk() {
   try {
     await formRef.value.validate()
-    // 发登录请求
-    let res = await userCreateApi(formState)
-    if (res.code) {
-      message.error(res.msg)
-      return
-    }
-    message.success(res.msg)
-    data.modalVisible = false
-    Object.assign(formState, _formState)
-    formRef.value.clearValidate()
-
-    // getData()
   } catch (e) {
+    return
   }
-
+  // 发登录请求
+  let res = await userCreateApi(formState)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  data.modalVisible = false
+  Object.assign(formState, _formState)
+  formRef.value.clearValidate()
+gvbTable.value.ExportList()
 }
 
 // 更新用户
@@ -215,7 +214,7 @@ async function update() {
     return
   }
   message.success(res.msg)
-  // getData()
+  gvbTable.value.ExportList()
 }
 </script>
 
