@@ -1,6 +1,16 @@
 import {defineStore} from 'pinia'
 import {message} from 'ant-design-vue';
 
+
+const data = {
+    token: "",
+    nick_name: '',
+    role: 0, // 1 管理员  2 普通用户  3 游客
+    user_id: 0,
+    avatar: '',
+    exp: 1677902977.84318
+}
+
 export const useStore = defineStore('gvb', {
     state: () => {
         return {
@@ -83,7 +93,13 @@ export const useStore = defineStore('gvb', {
             }
 
             if (this.tabList.findIndex((item) => item.name === tab.name) === -1) {
-                this.tabList.push({name: tab.name, title: tab.title, params: tab.params, query: tab.query, parentTitle: tab.parentTitle})
+                this.tabList.push({
+                    name: tab.name,
+                    title: tab.title,
+                    params: tab.params,
+                    query: tab.query,
+                    parentTitle: tab.parentTitle
+                })
             }
 
         },
@@ -116,6 +132,14 @@ export const useStore = defineStore('gvb', {
 
         setCrumb(list) {
             this.bread_crumb_list = list
+        },
+
+
+        clear() {
+            this.userInfo = data
+            this.tabList = []
+            this.bread_crumb_list = []
+            localStorage.clear()
         }
     }
 })
