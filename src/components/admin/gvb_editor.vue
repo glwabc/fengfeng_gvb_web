@@ -8,6 +8,7 @@ import 'md-editor-v3/lib/style.css';
 import {ref, watch, onMounted} from "vue";
 import {useStore} from "@/stores/store";
 import {uploadImageApi} from "@/api/image_api";
+import {message} from "ant-design-vue";
 
 const store = useStore()
 const theme = ref("dark")
@@ -29,7 +30,7 @@ const emit = defineEmits(['update:content', "onSave"])
 watch(content, () => {
   emit('update:content', content.value)
 })
-watch(()=>props.content, ()=>{
+watch(() => props.content, () => {
   content.value = props.content
 }, {immediate: true})
 
@@ -44,7 +45,14 @@ const onUploadImg = async (files, callback) => {
         return uploadImageApi(file)
       })
   );
-  callback(res.map((item) => item.data));
+  let resOne = res[0]
+  if (resOne.code) {
+    message.error(resOne.msg)
+    return
+  }
+  callback(res.map((item) => {
+    return item.data
+  }));
 };
 
 const onSave = (md, h) => {
