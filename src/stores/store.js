@@ -81,15 +81,18 @@ export const useStore = defineStore('gvb', {
         addTab(tab) {
             // 判断是否要删除第二个
             // 总长度
-            let allLen = document.querySelector(".gvb_tabs").offsetWidth
-            // 使用的长度
-            let useLen = 0
-            let gvbItems = document.querySelectorAll(".gvb_tab_item")
-            for (const gvbItem of gvbItems) {
-                useLen += gvbItem.offsetWidth + 10
-            }
-            if (allLen - useLen < 130) {
-                this.removeIndexTab(1)
+            const select = document.querySelector(".gvb_tabs")
+            if (select !== null) {
+                let allLen = select.offsetWidth
+                // 使用的长度
+                let useLen = 0
+                let gvbItems = document.querySelectorAll(".gvb_tab_item")
+                for (const gvbItem of gvbItems) {
+                    useLen += gvbItem.offsetWidth + 10
+                }
+                if (allLen - useLen < 130) {
+                    this.removeIndexTab(1)
+                }
             }
 
             if (this.tabList.findIndex((item) => item.name === tab.name) === -1) {
@@ -100,6 +103,7 @@ export const useStore = defineStore('gvb', {
                     query: tab.query,
                     parentTitle: tab.parentTitle
                 })
+                this.saveTabs()
             }
 
         },
