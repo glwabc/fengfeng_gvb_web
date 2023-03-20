@@ -5,6 +5,7 @@
 
 <script setup>
 import {useStore} from "@/stores/store";
+
 const store = useStore()
 store.loadTheme()
 
@@ -14,5 +15,7 @@ function setTheme() {
 </script>
 
 <style>
-
+i {
+  cursor: pointer;
+}
 </style>
