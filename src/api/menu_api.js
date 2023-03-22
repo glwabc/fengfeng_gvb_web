@@ -10,7 +10,7 @@ export function updateMenuApi(id, data) {
 }
 
 // 菜单详情
-export function getMenuDetailApi(id){
+export function getMenuDetailApi(path) {
     /*
 {
   "code": 0,
@@ -49,5 +49,28 @@ export function getMenuDetailApi(id){
   "msg": "成功"
 }
      */
-    return Service.get("/api/menus/" + id)
+    return Service.get("/api/menus/detail?path=" + path)
+}
+
+
+export function getMenuNameListApi() {
+    /*
+    {
+  "code": 0,
+  "data": [
+    {
+      "id": 1,
+      "title": "首页",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "title": "新闻",
+      "path": "/news"
+    }
+  ],
+  "msg": "成功"
+}
+     */
+    return Service.get("/api/menu_names")
 }

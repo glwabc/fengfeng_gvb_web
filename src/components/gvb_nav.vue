@@ -9,12 +9,9 @@
         <div>FENGFENGZHIDAO</div>
       </div>
       <div class="left">
-        <span><a href="/" class="router-link-active">首页</a></span>
-        <span><a href="/news" class="">新闻</a></span>
-        <span><a href="/about" class="">关于</a></span>
-        <span><a href="/search" class="">文章搜索</a></span>
-        <span><a href="/chat" class="">聊天室</a></span>
-        <span><a href="http://docs.fengfengzhidao.com/">官方文档</a></span>
+        <span
+            v-for="item in data.menuNameList" :key="item.id">
+          <router-link :to="item.path">{{ item.title }}</router-link></span>
         <span class="search"><i class="fa fa-search"></i></span>
       </div>
       <div class="right">
@@ -33,7 +30,7 @@
 <script setup>
 import GVBTheme from "@/components/gvb_theme.vue"
 import GVBUserInfo from "@/components/gvb_user_info.vue"
-
+import {getMenuNameListApi} from "@/api/menu_api";
 import {useStore} from "@/stores/store";
 import {reactive, ref} from "vue";
 
@@ -47,9 +44,13 @@ const props = defineProps({
 
 const data = reactive({
   is_show: false,
+  menuNameList: []
 })
 
 async function getInit() {
+  let res = await getMenuNameListApi()
+  data.menuNameList = res.data
+
   if (props.is_show) {
     data.is_show = true
   } else {
@@ -58,6 +59,7 @@ async function getInit() {
 }
 
 getInit()
+scroll()
 
 const store = useStore()
 
@@ -125,6 +127,10 @@ function scroll() {
 
     &:hover {
       color: var(--active);
+    }
+
+    &.router-link-exact-active {
+      color: var(--active)!important;
     }
   }
 

@@ -32,7 +32,9 @@
 import VueTyped from 'vue3typed/libs/typed/index.vue';
 import {reactive} from "vue";
 import {getMenuDetailApi} from "@/api/menu_api";
+import {useRoute} from "vue-router";
 
+const route = useRoute()
 const props = defineProps({
   // 对应文章的背景图
   url: {
@@ -62,7 +64,8 @@ const data = reactive({
 
 async function getData() {
   if (!props.isArticle) {
-    let res = await getMenuDetailApi(1)
+
+    let res = await getMenuDetailApi(route.path)
     data.slogan = res.data.slogan
     data.abstract = res.data.abstract
     data.abstract_time = res.data.abstract_time
