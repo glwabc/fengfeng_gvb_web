@@ -5,9 +5,7 @@
     <div class="gvb_base_container">
       <div class="gvb_inner_container gvb_index_main">
         <div class="left">
-          <GVBCCard title="今日热搜" link_name="查看更多" link="/news">
-            123
-          </GVBCCard>
+          <GVBNews></GVBNews>
         </div>
         <div class="right">
           1
@@ -22,6 +20,7 @@
 import GVBNav from "@/components/gvb_nav.vue"
 import GVBBanner from "@/components/gvb_banner.vue"
 import GVBCCard from "@/components/gvb_card.vue"
+import GVBNews from "@/components/index/gvb_news.vue"
 </script>
 
 <style lang="scss">
@@ -58,6 +57,7 @@ import GVBCCard from "@/components/gvb_card.vue"
       width: 396px;
     }
   }
+
 
 }
 
