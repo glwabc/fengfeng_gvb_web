@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="gvb_footer"></div>
+    <GVBFooter></GVBFooter>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ import GVBSiteCard from "@/components/index/gvb_site_card.vue"
 import GVBFadeBackCard from "@/components/index/gvb_fade_back_card.vue"
 import GVBAdvertCard from "@/components/index/gvb_advertis_card.vue"
 import GVBMyCard from "@/components/index/gvb_my_card.vue"
-
+import GVBFooter from "@/components/gvb_footer.vue"
 
 
 </script>
@@ -46,6 +46,7 @@ import GVBMyCard from "@/components/index/gvb_my_card.vue"
   .gvb_base_container {
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 
 
     .gvb_inner_container {
