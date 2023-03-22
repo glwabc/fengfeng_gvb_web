@@ -10,7 +10,7 @@
       </div>
       <div class="left">
         <span
-            v-for="item in data.menuNameList" :key="item.id">
+            v-for="item in store.navList" :key="item.id">
           <router-link :to="item.path">{{ item.title }}</router-link></span>
         <span class="search"><i class="fa fa-search"></i></span>
       </div>
@@ -30,11 +30,10 @@
 <script setup>
 import GVBTheme from "@/components/gvb_theme.vue"
 import GVBUserInfo from "@/components/gvb_user_info.vue"
-import {getMenuNameListApi} from "@/api/menu_api";
 import {useStore} from "@/stores/store";
 import {reactive, ref} from "vue";
 
-
+const store = useStore()
 const props = defineProps({
   is_show: {
     type: Boolean,
@@ -44,13 +43,9 @@ const props = defineProps({
 
 const data = reactive({
   is_show: false,
-  menuNameList: []
 })
 
 async function getInit() {
-  let res = await getMenuNameListApi()
-  data.menuNameList = res.data
-
   if (props.is_show) {
     data.is_show = true
   } else {
@@ -61,7 +56,7 @@ async function getInit() {
 getInit()
 scroll()
 
-const store = useStore()
+
 
 function scroll() {
   let top = document.documentElement.scrollTop
