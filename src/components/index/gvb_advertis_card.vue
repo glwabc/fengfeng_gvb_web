@@ -44,7 +44,7 @@ const data = reactive({
   height: 200px;
 
   .default_slick-arrow {
-    z-index: 100;
+    z-index: 10;
   }
 
   .default_slick-arrow:before {

@@ -10,6 +10,7 @@
         </div>
         <div class="right">
           <GVBAdvertCard></GVBAdvertCard>
+          <GVBMyCard style="margin-top: 20px"></GVBMyCard>
           <GVBTagsCard style="margin-top: 20px"></GVBTagsCard>
           <GVBSiteCard style="margin-top: 20px"></GVBSiteCard>
           <GVBFadeBackCard style="margin-top: 20px"></GVBFadeBackCard>
@@ -30,6 +31,10 @@ import GVBTagsCard from "@/components/index/gvb_tag_card.vue"
 import GVBSiteCard from "@/components/index/gvb_site_card.vue"
 import GVBFadeBackCard from "@/components/index/gvb_fade_back_card.vue"
 import GVBAdvertCard from "@/components/index/gvb_advertis_card.vue"
+import GVBMyCard from "@/components/index/gvb_my_card.vue"
+
+
+
 </script>
 
 <style lang="scss">
