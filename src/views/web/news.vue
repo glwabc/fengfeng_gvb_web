@@ -32,7 +32,6 @@ import GVBBanner from "@/components/gvb_banner.vue"
 
 
     .gvb_inner_container {
-      background-color: var(--card_bg);
       min-height: 1000px;
       width: 1200px;
       margin-top: 20px;
