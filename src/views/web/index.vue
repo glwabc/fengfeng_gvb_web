@@ -9,7 +9,7 @@
           <GVBArticleCalendarCard style="margin-top: 20px"></GVBArticleCalendarCard>
         </div>
         <div class="right">
-          1
+          <GVBTagsCard></GVBTagsCard>
         </div>
       </div>
     </div>
@@ -23,6 +23,7 @@ import GVBBanner from "@/components/gvb_banner.vue"
 import GVBCCard from "@/components/gvb_card.vue"
 import GVBNews from "@/components/index/gvb_news.vue"
 import GVBArticleCalendarCard from "@/components/index/gvb_article_calendar.vue"
+import GVBTagsCard from "@/components/index/gvb_tag_card.vue"
 </script>
 
 <style lang="scss">
