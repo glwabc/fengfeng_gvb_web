@@ -21,21 +21,4 @@ const data = reactive({})
 
 <style lang="scss">
 
-
-.base_view {
-  background-color: var(--bg);
-
-  .gvb_base_container {
-    display: flex;
-    justify-content: center;
-
-
-    .gvb_inner_container {
-      width: 1200px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-  }
-}
-
 </style>

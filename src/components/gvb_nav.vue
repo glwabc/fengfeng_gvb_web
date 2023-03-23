@@ -55,13 +55,12 @@ async function getInit() {
   if (props.is_show) {
     data.is_show = true
   } else {
+    scroll()
     window.addEventListener("scroll", scroll)
   }
 }
 
 getInit()
-scroll()
-
 
 function scroll() {
   let top = document.documentElement.scrollTop
@@ -98,7 +97,7 @@ function scroll() {
 
   .logo {
     width: 10%;
-    transform: scale(0.7);
+    transform: scale(0.7) translateX(-22px);;
 
     div:first-child {
       font-size: 26px;

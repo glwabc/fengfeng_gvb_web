@@ -125,23 +125,6 @@ get_new_data("KqndgxeLl9", "微博", "/static/news/weibo.png")
 
 <style lang="scss">
 
-
-.base_view {
-  background-color: var(--bg);
-
-  .gvb_base_container {
-    display: flex;
-    justify-content: center;
-
-
-    .gvb_inner_container {
-      width: 1200px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-  }
-}
-
 .news_main {
   width: 100%;
 
