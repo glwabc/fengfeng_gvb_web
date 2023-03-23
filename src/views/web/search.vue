@@ -55,7 +55,12 @@
                 <a :href="item.id" target="_blank" v-html="item.title"></a>
               </div>
               <div class="icon">
-                <span><i class="fa fa-eye"></i>{{ item.look_count }}</span>
+                <span v-if="data.query.sort === 'digg_count desc'"><i class="fa fa-thumbs-up"></i>{{ item.digg_count }}</span>
+                <span v-else-if="data.query.sort === 'comment_count desc'"><i class="fa fa-comments"
+                ></i>{{ item.comment_count }}</span>
+                <span v-else-if="data.query.sort === 'collects_count desc'"><i class="fa fa-star-o"
+                ></i>{{ item.collects_count }}</span>
+                <span v-else><i class="fa fa-eye"></i>{{ item.look_count }}</span>
                 <span><i class="fa fa-clock"></i>{{ getFormatDate(item.created_at) }}</span>
               </div>
             </div>
@@ -154,7 +159,7 @@ async function getData() {
 }
 
 
-async function getTagList(){
+async function getTagList() {
   let res = await getTagArticleListApi()
   data.tag_list = res.data.list
 }
