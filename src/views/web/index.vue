@@ -7,6 +7,7 @@
         <div class="left">
           <GVBNews></GVBNews>
           <GVBArticleCalendarCard style="margin-top: 20px"></GVBArticleCalendarCard>
+          <GVBArticleList style="margin-top: 20px"></GVBArticleList>
         </div>
         <div class="right">
           <GVBAdvertCard></GVBAdvertCard>
@@ -33,7 +34,7 @@ import GVBFadeBackCard from "@/components/index/gvb_fade_back_card.vue"
 import GVBAdvertCard from "@/components/index/gvb_advertis_card.vue"
 import GVBMyCard from "@/components/index/gvb_my_card.vue"
 import GVBFooter from "@/components/gvb_footer.vue"
-
+import GVBArticleList from "@/components/index/gvb_article_list.vue"
 
 </script>
 

@@ -4,6 +4,11 @@ export function getCategoryListApi() {
     return Service.get("/api/categorys")
 }
 
+// 文章列表
+export function getArticleListApi(params) {
+    return Service.get("/api/articles", {params})
+}
+
 export function createArticleApi(data) {
     return Service.post("/api/articles", data)
 }
