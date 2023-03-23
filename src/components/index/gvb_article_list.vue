@@ -51,11 +51,13 @@
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import {getFormatDate} from "@/utils/date";
 import {getArticleListApi} from "@/api/article_api";
 import {debounce} from "@/utils/utils";
 import {Empty} from 'ant-design-vue';
+import {useStore} from "@/stores/store";
+const store = useStore()
 
 const data = reactive({
   article_list: [
@@ -116,6 +118,11 @@ async function getData() {
   data.article_list = res.data.list
   data.total = res.data.count
 }
+
+watch(()=>store.tag, ()=>{
+  data.search.tag = store.tag
+  getData()
+})
 
 function pageChange() {
   getData()

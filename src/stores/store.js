@@ -25,7 +25,8 @@ export const useStore = defineStore('gvb', {
             },
             tabList: [],
             bread_crumb_list: [],
-            navList: []
+            navList: [],
+            tag: "", // 首页用户搜索的标签
         }
     },
     actions: {
@@ -147,6 +148,7 @@ export const useStore = defineStore('gvb', {
             localStorage.clear()
         },
 
+        // 加载顶部导航栏
         async loadNavList(){
             let value = sessionStorage.getItem("navList")
             if (value !== null){
@@ -156,6 +158,14 @@ export const useStore = defineStore('gvb', {
             let res = await getMenuNameListApi()
             this.navList = res.data
             sessionStorage.setItem("navList", JSON.stringify(res.data))
+        },
+        setTag(tagName){
+            if (tagName === this.tag){
+                // 取消
+                this.tag = ""
+                return
+            }
+            this.tag = tagName
         }
     }
 })
