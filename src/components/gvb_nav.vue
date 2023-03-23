@@ -11,7 +11,13 @@
       <div class="left">
         <span
             v-for="item in store.navList" :key="item.id">
-          <router-link :to="item.path">{{ item.title }}</router-link></span>
+          <template v-if="item.path.startsWith('http')">
+            <a :href="item.path">{{ item.title }}</a>
+          </template>
+          <template v-else>
+            <router-link :to="item.path">{{ item.title }}</router-link>
+          </template>
+        </span>
         <span class="search"><i class="fa fa-search"></i></span>
       </div>
       <div class="right">
@@ -55,7 +61,6 @@ async function getInit() {
 
 getInit()
 scroll()
-
 
 
 function scroll() {
@@ -125,7 +130,7 @@ function scroll() {
     }
 
     &.router-link-exact-active {
-      color: var(--active)!important;
+      color: var(--active) !important;
     }
   }
 

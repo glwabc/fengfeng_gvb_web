@@ -1,10 +1,7 @@
 <template>
   <div class="base_view index_view">
     <GVBNav></GVBNav>
-    <GVBBanner
-        url="http://blog.fengfengzhidao.com/uploads/file/cover/19.png"
-        slogan="xxx"
-        abstract="重新构造一些数据用于查询 func main(){ var studentList []Student DB.Find(&studentList).Delete(&studentList) studentList = []Student{ {ID: 1, Name:  true}, {ID:, {ID:"></GVBBanner>
+    <GVBBanner></GVBBanner>
     <div class="gvb_base_container">
       <div class="gvb_inner_container">
         <div class="news_main">
