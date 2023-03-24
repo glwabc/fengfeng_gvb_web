@@ -103,6 +103,7 @@ const data = reactive({
 
 })
 
+// 获取新闻数据
 async function get_new_data(id, name, url) {
   data.news_active = name
   data.news_active_url = url
@@ -111,7 +112,7 @@ async function get_new_data(id, name, url) {
   const t = e.getTime().toString();
   let signaturekey = venDor.AES.encrypt(t, "itab1314").toString()
   const header = {
-    version: "4.2.23",
+    version: "4.2.23",  // 版本随便写
     signaturekey: signaturekey,
   }
   let res = await getNewsApi(id, 50, header)

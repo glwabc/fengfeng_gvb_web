@@ -133,32 +133,37 @@ const data = reactive({
   simpleImage: Empty.PRESENTED_IMAGE_SIMPLE,
 })
 
+// 选择不同的排序
 function checkOrder(order) {
   data.query.sort = order
   getData()
 }
 
+// 选择不同的标签
 function checkTag(tag) {
   data.query.tag = tag
   getData()
 }
 
+// 分页
 function pageChange() {
   getData()
 }
 
+// 搜索
 function search() {
   data.query.page = 1
   getData()
 }
 
+// 获取数据
 async function getData() {
   let res = await getArticleListApi(data.query)
   data.article_list = res.data.list
   data.total = res.data.count
 }
 
-
+// 获取标签数据
 async function getTagList() {
   let res = await getTagArticleListApi()
   data.tag_list = res.data.list
