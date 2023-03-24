@@ -7,17 +7,28 @@
           <div class="title">【枫枫知道】在线聊天室</div>
           <div class="people_num">在线人数： 1</div>
         </div>
-        <div class="gvb_chat_body" :style="{height: data.setHeight}">
+        <div class="gvb_chat_body" ref="chatBody" :style="{height: data.setHeight}">
 
           <div class="message" v-for="(item,index) in data.message_list" :key="index">
             <template v-if="item.msg_type === inRoomMsg">
               <div class="in_room_msg">
-                <span>{{ item.content }}</span>
+                <a-tooltip placement="top">
+                  <template #title>
+                    <span>{{ getFormatDateTime(item.created_at) }}</span>
+                  </template>
+                  <span>{{ item.content }}</span>
+                </a-tooltip>
+
               </div>
             </template>
             <template v-if="item.msg_type === outRoomMsg">
               <div class="out_room_msg">
-                <span>{{ item.content }}111</span>
+                <a-tooltip placement="top">
+                  <template #title>
+                    <span>{{ getFormatDateTime(item.created_at) }}</span>
+                  </template>
+                  <span>{{ item.content }}</span>
+                </a-tooltip>
               </div>
             </template>
             <template v-if="item.msg_type === textMsg">
@@ -45,8 +56,9 @@
           <span><i class="fa fa-file-audio-o"></i></span>
         </div>
         <div class="gvb_chat_footer">
-          <a-textarea placeholder="发送你的消息，聊起来吧" :auto-size="{ minRows: 4, maxRows: 4 }"></a-textarea>
-          <a-button class="chat_btn">发送</a-button>
+          <a-textarea v-model:value="data.content" placeholder="发送你的消息，聊起来吧"
+                      @keydown.ctrl.enter="sendMessage" :auto-size="{ minRows: 4, maxRows: 4 }"></a-textarea>
+          <a-button @click="sendMessage" class="chat_btn">发送</a-button>
         </div>
       </div>
     </div>
@@ -58,8 +70,12 @@
 import GVBNav from "@/components/gvb_nav.vue"
 import GVBBanner from "@/components/gvb_banner.vue"
 import GVBFooter from "@/components/gvb_footer.vue"
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {chatGroupApi} from "@/api/chat_group_api";
+import {getFormatDateTime} from "@/utils/date";
+
+let socket = null
+let index = 0
 
 // allHeight - 60 - 20 -60 - 30 - 148  - 2 - 20
 /*
@@ -76,94 +92,17 @@ const inRoomMsg = 1;
 const textMsg = 2;
 const systemMsg = 6;
 const outRoomMsg = 7;
-
+const chatBody = ref(null)
 
 const data = reactive({
   allHeight: "100vh",
   setHeight: "597px",
-  message_list: [
-    {
-      "avatar": "uploads/chat_avatar/大.png",
-      "content": "大意的巴蒂斯图塔 进入聊天室",
-      "created_at": "2023-02-26T10:47:16.948+08:00",
-      "id": 14,
-      "is_group": true,
-      "msg_type": 1,
-      "nick_name": "大意的巴蒂斯图塔"
-    },
-    {
-      "avatar": "uploads/chat_avatar/矮.png",
-      "content": "矮小的哈维 进入聊天室",
-      "created_at": "2023-02-26T10:46:57.796+08:00",
-      "id": 13,
-      "is_group": true,
-      "msg_type": 1,
-      "nick_name": "矮小的哈维"
-    },
-    {
-      "avatar": "uploads/chat_avatar/矮.png",
-      "content": "矮小的哈维 进入聊天室",
-      "created_at": "2023-02-26T10:46:56.725+08:00",
-      "id": 12,
-      "is_group": true,
-      "msg_type": 1,
-      "nick_name": "矮小的哈维"
-    },
-    {
-      "avatar": "",
-      "content": "专注的鲁尼 离开聊天室",
-      "created_at": "2023-02-26T10:43:34.831+08:00",
-      "id": 11,
-      "is_group": true,
-      "msg_type": 1,
-      "nick_name": ""
-    },
-    {
-      "avatar": "uploads/chat_avatar/专.png",
-      "content": "专注的鲁尼 进入聊天室",
-      "created_at": "2023-02-26T10:43:24.995+08:00",
-      "id": 10,
-      "is_group": true,
-      "msg_type": 1,
-      "nick_name": "专注的鲁尼"
-    },
-    {
-      "avatar": "uploads/chat_avatar/约.png",
-      "content": "你好啊",
-      "created_at": "2023-02-26T10:43:12.555+08:00",
-      "id": 9,
-      "is_group": true,
-      "msg_type": 2,
-      "nick_name": "约翰·查尔斯求而不得"
-    },
-    {
-      "avatar": "uploads/chat_avatar/鸣.png",
-      "content": "好1123",
-      "created_at": "2023-02-26T10:39:28.34+08:00",
-      "id": 7,
-      "is_group": true,
-      "msg_type": 2,
-      "nick_name": "鸣人完成了大四喜"
-    },
-    {
-      "avatar": "uploads/chat_avatar/忧.png",
-      "content": "好",
-      "created_at": "2023-02-25T23:54:53.501+08:00",
-      "id": 5,
-      "is_group": true,
-      "msg_type": 2,
-      "nick_name": "忧郁的古利特"
-    },
-    {
-      "avatar": "uploads/chat_avatar/大.png",
-      "content": "你好啊",
-      "created_at": "2023-02-25T23:54:48.381+08:00",
-      "id": 4,
-      "is_group": true,
-      "msg_type": 2,
-      "nick_name": "大气的加林查"
-    },
-  ]
+  message_list: [],
+  user_info: {
+    nick_name: "",
+    avatar: "",
+  },
+  content: ""
 })
 
 
@@ -175,11 +114,79 @@ async function getData() {
   data.allHeigh = allHeight + "px"
   let setHeight = allHeight - 340
   data.setHeight = setHeight + "px"
-  let res = await chatGroupApi()
+
+  // 加载聊天记录
+  let res = await chatGroupApi({limit: 50})
   data.message_list = res.data.list
+  data.message_list.reverse()
+  // 建立websocket连接
+  let websocketURL = import.meta.env.VITE_WEBSOCKET
+  socket = new WebSocket(websocketURL + "/api/chat_groups")
+  // 接收消息
+  socket.onmessage = messageApply
+
+  // 连接成功之后的回调
+  socket.onopen = function (ev) {
+    console.log("onopen: ", ev)
+  }
+  // 错误
+  socket.onerror = function (ev) {
+    console.log("onerror: ", ev)
+  }
+  // 服务端关闭
+  socket.onclose = function (ev) {
+    console.log("onclose: ", ev)
+  }
+}
+
+function messageApply(event) {
+  let _data = event.data
+  let jsonData = JSON.parse(_data)
+  if (index === 0) {
+    data.user_info.nick_name = jsonData.nick_name
+    index++
+    return
+  }
+  pushMessage(jsonData)
+  index++
+}
+
+function pushMessage(jsonData) {
+  console.log(jsonData)
+  if (jsonData.nick_name === data.user_info.nick_name) {
+    jsonData.is_me = true
+  }
+  data.message_list.push(jsonData)
+}
+
+function sendMessage() {
+  let _data = {
+    content: data.content,
+    msg_type: textMsg,
+  }
+  socket.send(JSON.stringify(_data))
+  data.content = ""
+
+  setTimeout(() => {
+    let top = chatBody.value.scrollHeight  // 10000
+    let h = chatBody.value.clientHeight
+    let timer = null
+    timer = setInterval(() => {
+      let newTop = chatBody.value.scrollTop
+      if (top <= newTop + h) {
+        console.log("清除定时器")
+        clearInterval(timer)
+        return
+      }
+      chatBody.value.scrollTop += 20
+    }, 5)
+
+    // chatBody.value.scrollTop = chatBody.value.scrollHeight
+  }, 100)
 
 
 }
+
 
 getData()
 
@@ -248,6 +255,13 @@ getData()
           color: #494949;
           font-size: 12px;
           padding: 2px 10px;
+          cursor: pointer;
+        }
+      }
+
+      .out_room_msg {
+        span {
+          background-color: #f7e5e5;
         }
       }
 
@@ -267,6 +281,14 @@ getData()
 
           .message-content {
             margin-top: 5px;
+
+            .content {
+
+
+              display: flex;
+              margin-left: 10px;
+              justify-content: left;
+            }
 
             .txt-message {
               background-color: #d2d2d2;
@@ -299,6 +321,12 @@ getData()
 
         .message-main {
           .message-content {
+            .content {
+              display: flex;
+              margin-right: 10px;
+              justify-content: right;
+            }
+
             .txt-message::before {
               right: -31px;
               left: inherit;
