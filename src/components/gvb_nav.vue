@@ -18,7 +18,9 @@
             <router-link :to="item.path">{{ item.title }}</router-link>
           </template>
         </span>
-        <span class="search"><i class="fa fa-search"></i></span>
+        <span class="search">
+          <GVBTextSearch></GVBTextSearch>
+        </span>
       </div>
       <div class="right">
         <span class="login_btn" v-if="store.userInfo.role === 0"><router-link
@@ -38,7 +40,7 @@ import GVBTheme from "@/components/gvb_theme.vue"
 import GVBUserInfo from "@/components/gvb_user_info.vue"
 import {useStore} from "@/stores/store";
 import {reactive, ref} from "vue";
-
+import GVBTextSearch from "@/components/gvb_text_search.vue"
 const store = useStore()
 const props = defineProps({
   is_show: {
