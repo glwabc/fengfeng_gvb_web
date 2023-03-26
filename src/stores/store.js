@@ -136,11 +136,12 @@ export const useStore = defineStore('gvb', {
             this.tabList = [{title: "首页", name: "home"}]
         },
 
+        // 设置面包屑
         setCrumb(list) {
             this.bread_crumb_list = list
         },
 
-
+        // 清空store
         clear() {
             this.userInfo = data
             this.tabList = [{title: "首页", name: "home"}]

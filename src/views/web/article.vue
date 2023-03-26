@@ -57,7 +57,7 @@
               <span>{{ data.comment_count }}</span> 条评论
             </div>
           </div>
-          <GVBArticleCommentList style="margin-top: 20px"></GVBArticleCommentList>
+          <GVBArticleCommentList ref="gvbArticleCommentList" style="margin-top: 20px"></GVBArticleCommentList>
         </article>
         <aside>
           <div class="article_user_info">
@@ -130,6 +130,9 @@ import {useStore} from "@/stores/store";
 import {articleDiggApi, articleCollectApi} from "@/api/article_api";
 import {commentCreateApi} from "@/api/comment_api";
 import GVBArticleCommentList from "@/components/gvb_article_comment_list.vue"
+
+const gvbArticleCommentList = ref(null)
+
 const MdCatalog = MdEditor.MdCatalog;
 const scrollElement = document.documentElement;
 const article_directory = ref(null)
@@ -182,7 +185,7 @@ const commentData = reactive({
 
 async function addComment() {
   if (commentData.content.trim() === "") {
-    message.warn("文章内容不可为空")
+    message.warn("评论内容不可为空")
     return
   }
   let res = await commentCreateApi(commentData)
@@ -192,6 +195,7 @@ async function addComment() {
   }
   message.success(res.msg)
   commentData.content = ""
+  gvbArticleCommentList.value.getData()
 }
 
 
