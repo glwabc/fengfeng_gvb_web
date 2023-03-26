@@ -70,7 +70,7 @@
 import GVBNav from "@/components/gvb_nav.vue"
 import GVBBanner from "@/components/gvb_banner.vue"
 import GVBFooter from "@/components/gvb_footer.vue"
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import {chatGroupApi} from "@/api/chat_group_api";
 import {getFormatDateTime} from "@/utils/date";
 
