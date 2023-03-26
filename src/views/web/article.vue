@@ -46,15 +46,18 @@
             <div class="body">
               <a-textarea
                   class="article_comment_ipt"
+                  v-model:value="commentData.content"
                   :auto-size="{ minRows: 6, maxRows: 6 }"
+                  @keydown.ctrl.enter="addComment"
                   placeholder="请输入文章评论"></a-textarea>
-              <a-button class="add_comment_btn" type="primary">发布</a-button>
+              <a-button class="add_comment_btn" @click="addComment" type="primary">发布</a-button>
             </div>
             <div class="comment_footer">
               <span>{{ data.look_count }}</span> 人参与，
               <span>{{ data.comment_count }}</span> 条评论
             </div>
           </div>
+          <GVBArticleCommentList style="margin-top: 20px"></GVBArticleCommentList>
         </article>
         <aside>
           <div class="article_user_info">
@@ -125,7 +128,8 @@ import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css"
 import {useStore} from "@/stores/store";
 import {articleDiggApi, articleCollectApi} from "@/api/article_api";
-
+import {commentCreateApi} from "@/api/comment_api";
+import GVBArticleCommentList from "@/components/gvb_article_comment_list.vue"
 const MdCatalog = MdEditor.MdCatalog;
 const scrollElement = document.documentElement;
 const article_directory = ref(null)
@@ -166,6 +170,29 @@ const data = reactive({
   is_collect: false, // 用户是否收藏文章
   is_digg: false
 })
+
+
+// 发布评论的一些参数
+const commentData = reactive({
+  article_id: route.params.id,
+  content: "",
+  parent_comment_id: null
+})
+
+
+async function addComment() {
+  if (commentData.content.trim() === "") {
+    message.warn("文章内容不可为空")
+    return
+  }
+  let res = await commentCreateApi(commentData)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  commentData.content = ""
+}
 
 
 async function getData() {
@@ -243,7 +270,7 @@ onMounted(() => {
 // 去评论
 function goComment() {
   scrollIntoView(".article_comment_ipt")
-  setTimeout(()=>{
+  setTimeout(() => {
     // 选中评论框
     document.querySelector(".article_comment_ipt").focus()
   }, 800)
