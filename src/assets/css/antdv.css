@@ -1402,7 +1402,7 @@ html {
 
 .dark h1,.dark h2,.dark h3,.dark h4,.dark h5,.dark h6 {
     margin-top: 0;
-    margin-bottom: .5em;
+    /*margin-bottom: .5em;*/
     color: #ffffffd9;
     font-weight: 500
 }
@@ -61874,7 +61874,7 @@ pre code {
     line-height: 2;
     white-space: pre;
     background: white;
-    border: 1px solid #e9e9e9;
+    /*border: 1px solid #e9e9e9;*/
     border-radius: 2px
 }
 
@@ -64689,12 +64689,12 @@ ul.anticons-list li.copied:after {
     line-height: 2;
     white-space: pre;
     background: white;
-    border: 1px solid #e9e9e9;
+    /*border: 1px solid #e9e9e9;*/
     border-radius: 2px
 }
 
 .dark code[class*=language-],.dark pre[class*=language-] {
-    color: #000;
+    /*color: #000;*/
     font-family: Lucida Console,Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
     line-height: 1.5;
     direction: ltr;
@@ -64708,7 +64708,7 @@ ul.anticons-list li.copied:after {
     tab-size: 4;
     -webkit-hyphens: none;
     hyphens: none;
-    background: none
+    /*background: none*/
 }
 
 .dark code[class*=css] {

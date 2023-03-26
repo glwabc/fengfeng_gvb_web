@@ -29,3 +29,18 @@ export function getArticleIDTitle(){
 export function getArticleCalendarApi(){
     return Service.get("/api/articles/calendar")
 }
+
+// 获取文章详情
+export function getArticleDetailApi(id){
+    return Service.get("/api/articles/" + id)
+}
+
+// 文章点赞
+export function articleDiggApi(id){
+    return Service.post("/api/articles/digg", {id})
+}
+
+// 文章收藏
+export function articleCollectApi(id){
+    return Service.post("/api/articles/collects", {id})
+}

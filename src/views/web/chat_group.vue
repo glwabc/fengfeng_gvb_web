@@ -5,7 +5,7 @@
       <div class="gvb_inner_container">
         <div class="gvb_chat_head">
           <div class="title">【枫枫知道】在线聊天室</div>
-          <div class="people_num">在线人数： 1</div>
+          <div class="people_num">在线人数： {{ data.online }}</div>
         </div>
         <div class="gvb_chat_body" ref="chatBody" :style="{height: data.setHeight}">
 
@@ -73,7 +73,7 @@ import GVBFooter from "@/components/gvb_footer.vue"
 import {reactive, ref, watch} from "vue";
 import {chatGroupApi} from "@/api/chat_group_api";
 import {getFormatDateTime} from "@/utils/date";
-
+import {onBeforeRouteLeave} from "vue-router"
 let socket = null
 let index = 0
 
@@ -102,7 +102,8 @@ const data = reactive({
     nick_name: "",
     avatar: "",
   },
-  content: ""
+  content: "",
+  online: 1,
 })
 
 
@@ -142,6 +143,7 @@ async function getData() {
 function messageApply(event) {
   let _data = event.data
   let jsonData = JSON.parse(_data)
+  data.online = jsonData.online_count
   if (index === 0) {
     data.user_info.nick_name = jsonData.nick_name
     index++
@@ -187,7 +189,9 @@ function sendMessage() {
 
 }
 
-
+onBeforeRouteLeave(()=>{
+  socket.close()
+})
 getData()
 
 </script>

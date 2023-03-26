@@ -1,30 +1,39 @@
 <template>
   <div class="base_view article_view">
     <GVBNav></GVBNav>
-    <GVBBanner
-        url="http://blog.fengfengzhidao.com/uploads/file/cover/19.png"
-        slogan="文章标题"
-        abstract="这是一篇文章"
-        is-article
-    ></GVBBanner>
+    <div style="height: 600px">
+      <GVBBanner
+          :url="data.banner_url"
+          :slogan="data.title"
+          :abstract="data.abstract"
+          is-article
+          v-if="data.title !== ''"
+      ></GVBBanner>
+    </div>
+
     <div class="gvb_base_container">
       <div class="gvb_inner_container">
+        <div class="go_top_box" style="position:absolute; top: 540px; "></div>
         <article>
           <div class="article_head">
-            <h2>Gorm高级查询</h2>
+            <h2>{{ data.title }}</h2>
             <div class="info">
-              <span class="date">发布时间：2023-02-02</span>
-              <span>作者：枫枫</span>
+              <span class="date">发布时间：{{ getFormatDate(data.created_at) }}</span>
+              <span>作者：{{ data.user_nick_name }}</span>
             </div>
             <div class="tag">
               <i title="文章标签" class="fa fa-tags"></i>
-              <a-tag color="red">golang</a-tag>
-              <a-tag color="blue">gorm</a-tag>
+              <a-tag color="red" v-for="item in data.tags">{{ item }}</a-tag>
             </div>
 
           </div>
           <div class="article_content">
-
+            <md-editor
+                :previewOnly="true"
+                v-model="data.content"
+                :theme="theme"
+                :editorId="data.id"
+            />
           </div>
           <div class="article_on_the">
             <div class="article_on_the_inner">
@@ -36,24 +45,25 @@
             <div class="title">你觉得文章怎么样</div>
             <div class="body">
               <a-textarea
+                  class="article_comment_ipt"
                   :auto-size="{ minRows: 6, maxRows: 6 }"
                   placeholder="请输入文章评论"></a-textarea>
               <a-button class="add_comment_btn" type="primary">发布</a-button>
             </div>
             <div class="comment_footer">
-              <span>109</span> 人参与，
-              <span>0</span> 条评论
+              <span>{{ data.look_count }}</span> 人参与，
+              <span>{{ data.comment_count }}</span> 条评论
             </div>
           </div>
         </article>
         <aside>
           <div class="article_user_info">
             <div class="user_info_avatar">
-              <img src="http://blog.fengfengzhidao.com/uploads/file/avatar/%E5%A4%B4%E5%83%8F_0006_23.jpg" alt="">
+              <img :src="data.user_avatar" alt="">
             </div>
             <div class="user_info_info">
               <div class="user_name">
-                枫枫
+                {{ data.user_nick_name }}
               </div>
               <div class="user_abstract">
                 一个疯狂的coder
@@ -63,25 +73,36 @@
               <a href="#"><i class="fa fa-github-square"></i></a>
             </div>
             <div class="article_data">
-              <div class="item"><span>109</span><span>浏览</span></div>
-              <div class="item"><span>0</span><span>收藏</span></div>
-              <div class="item"><span>3</span><span>点赞</span></div>
-              <div class="item"><span>2</span><span>评论</span></div>
+              <div class="item"><span>{{ data.look_count }}</span><span>浏览</span></div>
+              <div class="item"><span>{{ data.collects_count }}</span><span>收藏</span></div>
+              <div class="item"><span>{{ data.digg_count }}</span><span>点赞</span></div>
+              <div class="item"><span>{{ data.comment_count }}</span><span>评论</span></div>
             </div>
           </div>
-          <div class="article_directory">
-            <div class="title">
-              文章目录
+          <div class="article_directory_action" ref="article_directory" :style="slideStyle">
+            <div class="article_directory">
+              <div class="title">
+                文章目录
+              </div>
+              <div class="body">
+                <md-catalog
+                    ref="articleCatalog"
+                    :editorId="data.id"
+                    :scroll-element="scrollElement"
+                    :theme="theme"
+                    :scroll-element-offset-top="80"
+                    :offsetTop="100"
+                />
+              </div>
             </div>
-            <div class="body">
-              12
+            <div class="article_action">
+              <div :class="{item:true,active: data.is_digg}" @click="goArticleDigg"><i
+                  class="iconfont icon-dianzan"></i></div>
+              <div :class="{item:true,active: data.is_collect}" @click="goArticleCollect"><i
+                  class="iconfont icon-shoucangxiao"></i></div>
+              <div class="item" @click="goTop"><i class="iconfont icon-huojian"></i></div>
+              <div class="item" @click="goComment"><i class="iconfont icon-pinglun"></i></div>
             </div>
-          </div>
-          <div class="article_action">
-            <div class="item">赞</div>
-            <div class="item">藏</div>
-            <div class="item">顶</div>
-            <div class="item">评</div>
           </div>
         </aside>
       </div>
@@ -96,9 +117,184 @@ import GVBNav from "@/components/gvb_nav.vue"
 import GVBBanner from "@/components/gvb_banner.vue"
 import GVBFooter from "@/components/gvb_footer.vue"
 import {useRoute} from "vue-router";
+import {getArticleDetailApi} from "@/api/article_api";
+import {reactive, ref, watch, onMounted} from "vue";
+import {message} from "ant-design-vue";
+import {getFormatDate} from "@/utils/date";
+import MdEditor from "md-editor-v3";
+import "md-editor-v3/lib/style.css"
+import {useStore} from "@/stores/store";
+import {articleDiggApi, articleCollectApi} from "@/api/article_api";
 
+const MdCatalog = MdEditor.MdCatalog;
+const scrollElement = document.documentElement;
+const article_directory = ref(null)
 const route = useRoute()
-console.log(route)
+const store = useStore()
+const slide_top = ref()
+const slideStyle = reactive({
+  position: "inherit",
+  width: "auto",
+  top: "60px"
+})
+const theme = ref("dark")
+watch(() => store.theme, (themeVal) => {
+  theme.value = themeVal ? "" : "dark"
+}, {immediate: true}) // 初始化就执行回调
+
+const data = reactive({
+  abstract: "",
+  banner_id: 0,
+  banner_url: "",
+  category: "",
+  collects_count: 0,
+  comment_count: 0,
+  content: "",
+  created_at: "",
+  digg_count: 0,
+  id: "",
+  keyword: "",
+  link: "",
+  look_count: 0,
+  source: "",
+  tags: [],
+  title: "",
+  updated_at: "",
+  user_avatar: "",
+  user_id: 0,
+  user_nick_name: "",
+  is_collect: false, // 用户是否收藏文章
+  is_digg: false
+})
+
+
+async function getData() {
+  let res = await getArticleDetailApi(route.params.id)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  Object.assign(data, res.data)
+}
+
+// 滚动监听
+function scroll() {
+  let scrollTop = document.scrollingElement.scrollTop || document.body.scrollTop
+  if (scrollTop >= slide_top.value) {
+    slideStyle.position = "fixed"
+  } else {
+    slideStyle.position = "inherit"
+  }
+}
+
+
+// 文章点赞
+async function goArticleDigg() {
+  let res = await articleDiggApi(data.id)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  data.is_digg = true
+  data.digg_count++
+  setTimeout(() => {
+    data.is_digg = false
+  }, 1000)
+
+}
+
+
+// 文章收藏
+async function goArticleCollect() {
+  let res = await articleCollectApi(data.id)
+  if (res.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+  // 判断是收藏还是取消收藏
+  data.is_collect = !data.is_collect
+
+}
+
+
+onMounted(() => {
+  // slide的高度
+  slide_top.value = article_directory.value.offsetTop - 38
+  // slide的定宽，设置fixed的时候，必须要设置宽度，不然会塌陷
+  slideStyle.width = article_directory.value.scrollWidth + "px"
+  let articleCatalog = document.querySelector(".md-editor-catalog ")
+
+  window.addEventListener("scroll", scroll)
+
+  // 设置目录的最大可展示范围
+  setTimeout(() => {
+    let mh = articleCatalog.scrollHeight
+    let ah = document.documentElement.offsetHeight
+    let rh = ah - 470  // 470 就是总高度减去不可显示的高度
+    if (mh >= rh) {
+
+    }
+    document.querySelector(".article_directory .body").style.maxHeight = rh + "px"
+  }, 100)
+})
+
+// 去评论
+function goComment() {
+  scrollIntoView(".article_comment_ipt")
+  setTimeout(()=>{
+    // 选中评论框
+    document.querySelector(".article_comment_ipt").focus()
+  }, 800)
+
+}
+
+// 回到顶部
+function goTop() {
+  scrollIntoView(".go_top_box")
+}
+
+
+// 滚动条滚动到某个元素的位置
+function scrollIntoView(traget) {
+  const tragetElem = document.querySelector(traget);
+  const tragetElemPostition = tragetElem.offsetTop;
+
+  // 判断是否支持新特性
+  if (
+      typeof window.getComputedStyle(document.body).scrollBehavior ==
+      "undefined"
+  ) {
+    // 当前滚动高度
+    let scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+    // 滚动step方法
+    const step = function () {
+      // 距离目标滚动距离
+      let distance = tragetElemPostition - scrollTop;
+
+      // 目标需要滚动的距离，也就是只走全部距离的五分之一
+      scrollTop = scrollTop + distance / 5;
+      if (Math.abs(distance) < 1) {
+        window.scrollTo(0, tragetElemPostition);
+      } else {
+        window.scrollTo(0, scrollTop);
+        setTimeout(step, 20);
+      }
+    };
+    step();
+  } else {
+    tragetElem.scrollIntoView({
+      behavior: "smooth",
+      inline: "nearest"
+    });
+  }
+}
+
+
+getData()
+
 </script>
 
 
@@ -124,6 +320,8 @@ console.log(route)
         }
 
         .info {
+          margin: 5px 0;
+
           .date {
             margin-right: 20px;
           }
@@ -143,6 +341,17 @@ console.log(route)
         min-height: 100px;
         background-color: var(--card_bg);
         margin-top: 1px;
+        padding: 10px 20px;
+
+        .md-editor {
+          background-color: var(--card_bg);
+        }
+
+        .default-theme img {
+          padding: 0;
+          border: none;
+          border-radius: 0;
+        }
       }
 
       .article_on_the {
@@ -174,6 +383,7 @@ console.log(route)
         .body {
           margin-top: 10px;
           position: relative;
+
 
           .ant-input {
             border-radius: 5px;
@@ -269,11 +479,14 @@ console.log(route)
 
       }
 
+      .article_directory_action {
+        margin-top: 20px;
+      }
+
       .article_directory {
         padding: 20px;
         border-radius: 5px;
         background-color: var(--card_bg);
-        margin-top: 20px;
 
         .title {
           font-size: 16px;
@@ -289,32 +502,68 @@ console.log(route)
           overflow-x: hidden;
           display: grid;
           grid-row-gap: 10px;
+
+          &::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0;
+            background-color: transparent;
+          }
+
+          &::-webkit-scrollbar-button {
+            background-color: transparent;
+            height: 5px;
+          }
+
+          &:hover {
+            &::-webkit-scrollbar-thumb {
+              background-color: var(--bg);
+            }
+
+            &::-webkit-scrollbar-button {
+              background-color: var(--bg);
+            }
+          }
+        }
+
+      }
+    }
+
+    .article_action {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 10px;
+
+      .item {
+        background-color: var(--card_bg);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:first-child {
+          border-radius: 5px 0 0 5px;
+        }
+
+        &:last-child {
+          border-radius: 0 5px 5px 0;
+        }
+
+        i {
+          font-size: 18px;
         }
       }
 
-      .article_action{
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-column-gap: 10px;
-        .item{
-          background-color: var(--card_bg);
-          padding: 10px 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-
-          &:first-child{
-            border-radius: 5px 0 0 5px;
-          }
-
-          &:last-child{
-            border-radius: 0 5px 5px 0;
-          }
-        }
+      .item.active {
+        color: var(--active);
       }
     }
   }
 }
+
+
 </style>
