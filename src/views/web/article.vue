@@ -130,6 +130,7 @@ import {useStore} from "@/stores/store";
 import {articleDiggApi, articleCollectApi} from "@/api/article_api";
 import {commentCreateApi} from "@/api/comment_api";
 import GVBArticleCommentList from "@/components/gvb_article_comment_list.vue"
+import {roll} from "@/utils/roll";
 
 const gvbArticleCommentList = ref(null)
 
@@ -269,6 +270,19 @@ onMounted(() => {
     }
     document.querySelector(".article_directory .body").style.maxHeight = rh + "px"
   }, 100)
+
+
+  let hash = route.hash
+  if (hash === "") {
+    return
+  }
+  setTimeout(() => {
+    let dom = document.querySelector(hash)
+    let top = dom.getBoundingClientRect().top
+    roll(top - 80)
+
+  }, 100)
+
 })
 
 // 去评论
@@ -318,7 +332,7 @@ function scrollIntoView(traget) {
   } else {
     tragetElem.scrollIntoView({
       behavior: "smooth",
-      inline: "nearest"
+      inline: "nearest",
     });
   }
 }
