@@ -16,14 +16,19 @@ export function getFormatDateTime(dateStr) {
     return currentDate;
 }
 
-export function getFormatDate(dateStr) {
+export function getFormatDate(dateStr, joins) {
     let date = new Date(dateStr);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
     month = (month<10)? '0'+ month : month;
     day = (day<10)? '0'+ day : day;
-    let currentDate = year + "-" + month + "-" + day
-    return currentDate;
+
+    if (joins === undefined){
+        return year + "-" + month + "-" + day;
+    }
+    return year + "年" + month + "月" + day + "日";
+
+
 }
 
