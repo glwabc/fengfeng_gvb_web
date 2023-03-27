@@ -242,7 +242,7 @@ getData()
             font-weight: 600;
 
             a {
-              color: #555;
+              color: var(--h2);
               em{
                 color: red;
                 margin-right: 5px;
@@ -257,7 +257,7 @@ getData()
             overflow: hidden;
             text-overflow: ellipsis;
             margin-bottom: 10px;
-            color: var(--text);
+            color: var(--h2);
           }
 
           .article_info {

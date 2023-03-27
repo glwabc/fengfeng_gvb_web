@@ -16,7 +16,7 @@
         <div class="go_top_box" style="position:absolute; top: 540px; "></div>
         <article>
           <div class="article_head">
-            <h2>{{ data.title }}</h2>
+            <h2>{{ data.title }} <i v-if="store.userInfo.role === 1" class="fa fa-edit" @click="goEditArticle"></i></h2>
             <div class="info">
               <span class="date">发布时间：{{ getFormatDate(data.created_at) }}</span>
               <span>作者：{{ data.user_nick_name }}</span>
@@ -131,6 +131,7 @@ import {articleDiggApi, articleCollectApi} from "@/api/article_api";
 import {commentCreateApi} from "@/api/comment_api";
 import GVBArticleCommentList from "@/components/gvb_article_comment_list.vue"
 import {roll} from "@/utils/roll";
+import router from "@/router";
 
 const gvbArticleCommentList = ref(null)
 
@@ -176,6 +177,18 @@ const data = reactive({
 })
 
 
+function goEditArticle() {
+  router.push({
+    name: "edit_article",
+    params: {
+      id: route.params.id,
+    },
+    query: {
+      redirect_url: "/article/" + route.params.id
+    },
+  })
+}
+
 // 发布评论的一些参数
 const commentData = reactive({
   article_id: route.params.id,
@@ -185,6 +198,13 @@ const commentData = reactive({
 
 
 async function addComment() {
+
+  if (store.userInfo.role === 0) {
+    message.warn("请登录后发布评论")
+    return
+  }
+
+
   if (commentData.content.trim() === "") {
     message.warn("评论内容不可为空")
     return
@@ -239,6 +259,10 @@ async function goArticleDigg() {
 
 // 文章收藏
 async function goArticleCollect() {
+  if (store.userInfo.role === 0) {
+    message.warn("请登录后收藏文章")
+    return
+  }
   let res = await articleCollectApi(data.id)
   if (res.code) {
     message.error(res.msg)

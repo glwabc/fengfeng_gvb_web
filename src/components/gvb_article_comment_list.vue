@@ -117,10 +117,13 @@ const user_id = store.userInfo.user_id
 async function getData() {
   let res = await getArticleCommentListApi(articleID)
   data.list = res.data
-  console.log(data.list)
 }
 
 function showApply(parentID, nick_name) {
+  if (store.userInfo.role === 0){
+    message.warn("请登录后回复")
+    return
+  }
   state.content = ""
   state.parent_comment_id = parentID
   state.nick_name = nick_name

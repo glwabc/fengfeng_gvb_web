@@ -5,7 +5,7 @@
       <div class="gvb_inner_container">
         <div class="gvb_search_head">
           <div class="gvb_search_slogn">
-            枫枫知道|搜索
+            {{ store.siteInfo.slogan }}|搜索
           </div>
           <div class="gvb_search_ipt">
             <a-input
@@ -93,6 +93,8 @@ import {getArticleListApi} from "@/api/article_api";
 import {getFormatDate} from "@/utils/date";
 import {Empty} from 'ant-design-vue';
 import {getTagArticleListApi} from "@/api/tag_api";
+import {useStore} from "@/stores/store";
+const store = useStore()
 
 const data = reactive({
   query: {
@@ -207,13 +209,13 @@ getTagList()
   }
 
   .gvb_search_action {
-    border-top: 1px solid #e2e2e2;
+    border-top: 1px solid var(--bg_darken);
     padding: 20px 0;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid var(--bg_darken);
 
     span {
       padding: 3px 6px;
-      color: var(--text);
+      color: var(--h2);
       cursor: pointer;
       font-size: 14px;
       margin-right: 20px;
@@ -270,7 +272,7 @@ getTagList()
 
       .info {
         padding: 8px;
-        color: #777;
+        color: var(--h2);
 
         .title {
           margin-bottom: 5px;
@@ -293,7 +295,7 @@ getTagList()
         }
 
         a {
-          color: var(--text);
+          color: var(--h2);
         }
       }
     }

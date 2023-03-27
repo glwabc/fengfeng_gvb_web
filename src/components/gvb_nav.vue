@@ -5,8 +5,8 @@
   }">
     <div class="gvb_nav_container">
       <div class="logo">
-        <div>枫枫知道</div>
-        <div>FENGFENGZHIDAO</div>
+        <div>{{ store.siteInfo.slogan }}</div>
+        <div>{{ store.siteInfo.slogan_en }}</div>
       </div>
       <div class="left">
         <span
