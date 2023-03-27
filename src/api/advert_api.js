@@ -1,5 +1,10 @@
 import {Service} from "@/services/service";
 
+
+export function getAdvertListApi(params){
+    return Service.get("/api/adverts", {params})
+}
+
 export function createAdvertApi(data){
     return Service.post("/api/adverts", data)
 }

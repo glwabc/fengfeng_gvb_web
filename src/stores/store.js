@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import {message} from 'ant-design-vue';
 import {getMenuNameListApi} from "@/api/menu_api";
+import {getSiteInfoApi} from "@/api/system_api";
 
 const data = {
     token: "",
@@ -27,6 +28,24 @@ export const useStore = defineStore('gvb', {
             bread_crumb_list: [],
             navList: [],
             tag: "", // 首页用户搜索的标签
+            siteInfo: {
+                created_at: "2023-02-15",
+                bei_an: "",
+                title: "",
+                qq_image: "",
+                version: "",
+                email: "",
+                wechat_image: "",
+                name: "",
+                job: "",
+                addr: "",
+                slogan: "",
+                slogan_en: "",
+                web: "",
+                bilibili_url: "",
+                gitee_url: "",
+                github_url: ""
+            }
         }
     },
     actions: {
@@ -150,9 +169,9 @@ export const useStore = defineStore('gvb', {
         },
 
         // 加载顶部导航栏
-        async loadNavList(){
+        async loadNavList() {
             let value = sessionStorage.getItem("navList")
-            if (value !== null){
+            if (value !== null) {
                 this.navList = JSON.parse(value)
                 return
             }
@@ -160,13 +179,34 @@ export const useStore = defineStore('gvb', {
             this.navList = res.data
             sessionStorage.setItem("navList", JSON.stringify(res.data))
         },
-        setTag(tagName){
-            if (tagName === this.tag){
+        setTag(tagName) {
+            if (tagName === this.tag) {
                 // 取消
                 this.tag = ""
                 return
             }
             this.tag = tagName
+        },
+
+        loadSiteInfo(){
+            let sites = sessionStorage.getItem("site_info")
+            if (sites === null){
+                // 没有
+                this.setSiteInfo()
+                return
+            }
+            let siteInfo = JSON.parse(sites)
+            this.$patch({
+                siteInfo: siteInfo
+            })
+        },
+        async setSiteInfo(){
+            let res = await getSiteInfoApi()
+            let siteInfo = res.data
+             this.$patch({
+                siteInfo: siteInfo
+            })
+            sessionStorage.setItem("site_info", JSON.stringify(siteInfo))
         }
     }
 })

@@ -12,53 +12,57 @@
       </p>
       <p class="version">
         <span>version</span>
-        <span>7.0.1</span>
+        <span>{{ store.siteInfo.version }}</span>
       </p>
-      <p>建站日期：2022-03-13</p>
+      <p>建站日期：{{ store.siteInfo.created_at }}</p>
       <p class="beian">
         <img src="/static/footer/badges.png" alt="">
-        <a href="https://beian.miit.gov.cn/">湘ICP备2021010654号-3</a>
+        <a href="https://beian.miit.gov.cn/">{{store.siteInfo.bei_an}}</a>
       </p>
     </div>
     <div class="right">
       <div class="my_info">
         <div class="qq" title="我的QQ">
-          <a href="tencent://message/?uin=2974771769&Site=&Menu=yes" title="向我咨询">
-            <img class="show_img" src="/static/footer/qq.png" alt="">
+          <a href="#" title="向我咨询">
+            <img class="show_img" :src="store.siteInfo.qq_image" alt="">
             <img class="img" src="/static/footer/qq_icon.svg" alt="">
           </a>
 
         </div>
         <div class="wechat" title="我的微信">
-          <img class="show_img" src="/static/footer/wechat.png" alt="">
+          <img class="show_img" :src="store.siteInfo.wechat_image" alt="">
           <img class="img" src="/static/footer/wexin_icon.svg" alt="">
         </div>
         <div title="我的哔哩哔哩">
-          <a href="https://space.bilibili.com/359151217" target="_blank">
+          <a :href="store.siteInfo.bilibili_url" target="_blank">
             <img class="img" src="/static/footer/bilibili_icon.svg" alt="">
           </a>
 
         </div>
         <div title="gitee">
-          <a href="https://gitee.com/fengfengzhidao" target="_blank">
+          <a :href="store.siteInfo.gitee_url" target="_blank">
             <img class="img" src="/static/footer/gitee_icon.svg" alt="">
           </a>
         </div>
         <div title="GitHub">
-          <a href="https://github.com/fengfengzhidao/" target="_blank">
+          <a :href="store.siteInfo.github_url" target="_blank">
             <img class="img" src="/static/footer/github_icon.svg" alt="">
           </a>
 
         </div>
       </div>
       <p>
-        <span>联系邮箱：2974771769@qq.com</span>
+        <span>联系邮箱：{{ store.siteInfo.email }}</span>
       </p>
     </div>
   </footer>
 </template>
 
 <script setup>
+import {useStore} from "@/stores/store";
+
+const store = useStore()
+store.loadSiteInfo()
 
 </script>
 
@@ -85,7 +89,8 @@
     &:last-child {
       margin-bottom: 0;
     }
-    a{
+
+    a {
       color: var(--text);
     }
 

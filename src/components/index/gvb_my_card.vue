@@ -4,24 +4,26 @@
       <h3>个人名片</h3>
       <h4>MY</h4>
       <h4>PROFILE</h4>
-      <img src="http://www.fengfengzhidao.com/static/my/img/footer/wechat.png" alt="我的微信">
+      <img :src="store.siteInfo.wechat_image" alt="我的微信">
     </div>
     <div class="jieqi">
       <img :title="data.title" :src="data.src" :style="{transform: data.transform}" alt="24节气">
     </div>
     <div class="footer">
-      <p>NAME <span>枫枫知道</span></p>
-      <p>JOB <span>全栈开发</span></p>
-      <p>ADDR <span>湖南长沙</span></p>
-      <p>WEB <a target="_blank" href="http://www.fengfengzhidao.com">www.fengfengzhidao.com</a></p>
+      <p>NAME <span>{{ store.siteInfo.name }}</span></p>
+      <p>JOB <span>{{ store.siteInfo.job }}</span></p>
+      <p>ADDR <span>{{ store.siteInfo.addr }}</span></p>
+      <p>WEB <a target="_blank" :href="store.siteInfo.web">{{ store.siteInfo.web }}</a></p>
     </div>
   </div>
 </template>
 
 <script setup>
-
+import {useStore} from "@/stores/store";
 import {reactive} from "vue";
 
+const store = useStore()
+store.loadSiteInfo()
 const data = reactive({
   title: "立春",
   transform: "translate(0px, -223px)",

@@ -10,11 +10,11 @@
       <b>联系我</b>
       <div class="my_image">
         <div class="qq_image">
-          <img src="http://www.fengfengzhidao.com/static/my/img/footer/qq.png" alt="">
+          <img :src="store.siteInfo.qq_image" alt="">
           <span>我的QQ</span>
         </div>
         <div class="wechat_image">
-          <img src="http://www.fengfengzhidao.com/static/my/img/footer/wechat.png" alt="">
+          <img :src="store.siteInfo.wechat_image" alt="">
           <span>我的微信</span>
         </div>
       </div>
@@ -26,7 +26,9 @@
 <script setup>
 import GVBCCard from "@/components/gvb_card.vue"
 import {reactive} from "vue";
-
+import {useStore} from "@/stores/store";
+const store = useStore()
+store.loadSiteInfo()
 const data = reactive({
   date: "",
   look_count: 2003412,

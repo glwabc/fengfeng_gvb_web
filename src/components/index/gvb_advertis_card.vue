@@ -21,6 +21,7 @@
 <script setup>
 import GVBCCard from "@/components/gvb_card.vue"
 import {reactive} from "vue";
+import {getAdvertListApi} from "@/api/advert_api";
 
 const data = reactive({
   advert_list: [
@@ -29,13 +30,16 @@ const data = reactive({
       href: "https://www.bilibili.com/video/BV1xg411t7RZ/",
       images: "http://python.fengfengzhidao.com/pic/20221112205133.png",
     },
-    {
-      id: 2,
-      href: "https://www.bilibili.com/video/BV1xg411t7RZ/",
-      images: "http://python.fengfengzhidao.com/pic/20220709141219.png",
-    }
   ]
 })
+
+async function getData() {
+  let res = await getAdvertListApi({limit: 4})
+  data.advert_list = res.data.list
+}
+
+getData()
+
 
 </script>
 
@@ -43,17 +47,27 @@ const data = reactive({
 .advert_carousel {
   height: 200px;
 
+
   .default_slick-arrow {
     z-index: 10;
   }
 
   .default_slick-arrow:before {
     display: none;
+
   }
 
   .carousel_icon {
     color: white;
     font-size: 20px;
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  &:hover {
+    .carousel_icon {
+      opacity: 1;
+    }
   }
 
   .advert_image {
