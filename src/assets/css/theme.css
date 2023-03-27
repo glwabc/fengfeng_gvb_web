@@ -8,6 +8,8 @@
     --slide_bg: #2e393d;
     --h2: #333333;
     --bg_darken: #e2e2e2;
+    --chat_text_bg: #e2e2e2;
+    --chat_text_out_bg: #d9e4ee;
 }
 
 .dark {
@@ -20,5 +22,7 @@
     --slide_bg: #282828;
     --h2: #b7b7b7;
     --bg_darken: #0c1e23;
+    --chat_text_bg: #020202;
+    --chat_text_out_bg: #06111b;
 }
 

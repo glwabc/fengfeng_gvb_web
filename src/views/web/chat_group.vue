@@ -51,11 +51,14 @@
 
         </div>
         <div class="gvb_chat_menu">
-          <span><i class="fa fa-cloud-upload"></i></span>
-          <span><i class="fa fa-file-image-o"></i></span>
-          <span><i class="fa fa-file-audio-o"></i></span>
+          <span @click="imageUpload"><i class="fa fa-cloud-upload"></i></span>
+          <span @click="fileUpload"><i class="fa fa-file-image-o"></i></span>
+          <span @click="voiceUpload"><i class="fa fa-file-audio-o"></i></span>
         </div>
         <div class="gvb_chat_footer">
+          <div class="gvb_chat_mask" v-if="data.mask">
+            <a-button type="primary" class="connect_chat_btn" @click="websocketConnect">进入聊天室</a-button>
+          </div>
           <a-textarea v-model:value="data.content" placeholder="发送你的消息，聊起来吧"
                       @keydown.ctrl.enter="sendMessage" :auto-size="{ minRows: 4, maxRows: 4 }"></a-textarea>
           <a-button @click="sendMessage" class="chat_btn">发送</a-button>
@@ -74,6 +77,8 @@ import {reactive, ref, watch} from "vue";
 import {chatGroupApi} from "@/api/chat_group_api";
 import {getFormatDateTime} from "@/utils/date";
 import {onBeforeRouteLeave} from "vue-router"
+import {message} from "ant-design-vue";
+
 let socket = null
 let index = 0
 
@@ -104,6 +109,7 @@ const data = reactive({
   },
   content: "",
   online: 1,
+  mask: true
 })
 
 
@@ -120,6 +126,10 @@ async function getData() {
   let res = await chatGroupApi({limit: 50})
   data.message_list = res.data.list
   data.message_list.reverse()
+
+}
+
+function websocketConnect() {
   // 建立websocket连接
   let websocketURL = import.meta.env.VITE_WEBSOCKET
   socket = new WebSocket(websocketURL + "/api/chat_groups")
@@ -129,6 +139,8 @@ async function getData() {
   // 连接成功之后的回调
   socket.onopen = function (ev) {
     console.log("onopen: ", ev)
+    data.mask = false
+    setTimeout(rollBootom, 100)
   }
   // 错误
   socket.onerror = function (ev) {
@@ -139,6 +151,7 @@ async function getData() {
     console.log("onclose: ", ev)
   }
 }
+
 
 function messageApply(event) {
   let _data = event.data
@@ -169,30 +182,48 @@ function sendMessage() {
   socket.send(JSON.stringify(_data))
   data.content = ""
 
-  setTimeout(() => {
-    let top = chatBody.value.scrollHeight  // 10000
-    let h = chatBody.value.clientHeight
-    let timer = null
-    timer = setInterval(() => {
-      let newTop = chatBody.value.scrollTop
-      if (top <= newTop + h) {
-        console.log("清除定时器")
-        clearInterval(timer)
-        return
-      }
-      chatBody.value.scrollTop += 20
-    }, 5)
-
-    // chatBody.value.scrollTop = chatBody.value.scrollHeight
-  }, 100)
+  setTimeout(rollBootom, 100)
 
 
 }
 
-onBeforeRouteLeave(()=>{
+function rollBootom() {
+  let top = chatBody.value.scrollHeight  // 10000
+  let h = chatBody.value.clientHeight
+  let timer = null
+  timer = setInterval(() => {
+    let newTop = chatBody.value.scrollTop
+    if (top <= newTop + h) {
+      console.log("清除定时器")
+      clearInterval(timer)
+      return
+    }
+    chatBody.value.scrollTop += 20
+  }, 5)
+}
+
+
+onBeforeRouteLeave(() => {
+  if (socket === null) {
+    return
+  }
   socket.close()
 })
 getData()
+
+
+function imageUpload() {
+  message.warn("暂未开发图片上传")
+}
+
+function voiceUpload() {
+  message.warn("暂未开发语音消息")
+}
+
+function fileUpload() {
+  message.warn("暂未开发文件上传")
+}
+
 
 </script>
 
@@ -238,13 +269,12 @@ getData()
 
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      background-color: #e0dddd
+      background-color: var(--chat_text_bg)
     }
 
     &::-webkit-scrollbar-button {
       background-color: transparent
     }
-
 
     .message {
       margin-bottom: 20px;
@@ -254,9 +284,9 @@ getData()
         justify-content: center;
 
         span {
-          background-color: #e2e2e2;
+          background-color: var(--chat_text_bg);
           border-radius: 5px;
-          color: #494949;
+          color: var(--text);
           font-size: 12px;
           padding: 2px 10px;
           cursor: pointer;
@@ -265,7 +295,7 @@ getData()
 
       .out_room_msg {
         span {
-          background-color: #f7e5e5;
+          background-color: var(--chat_text_out_bg);
         }
       }
 
@@ -295,7 +325,7 @@ getData()
             }
 
             .txt-message {
-              background-color: #d2d2d2;
+              background-color: var(--chat_text_bg);
               padding: 10px;
               position: relative;
               width: fit-content;
@@ -312,7 +342,7 @@ getData()
               top: 6px;
               border-width: 10px 20px;
               border-style: solid;
-              border-color: transparent #d2d2d2 transparent transparent;
+              border-color: transparent var(--chat_text_bg) transparent transparent;
             }
 
           }
@@ -337,7 +367,7 @@ getData()
               top: 6px;
               border-width: 10px 20px;
               border-style: solid;
-              border-color: transparent transparent transparent #d2d2d2;
+              border-color: transparent transparent transparent var(--chat_text_bg);
             }
           }
         }
@@ -374,6 +404,23 @@ getData()
     background-color: var(--card_bg);
     border-radius: 0 0 5px 5px;
     height: 148px;
+
+    .gvb_chat_mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .connect_chat_btn {
+        border-radius: 20px;
+      }
+    }
 
     .ant-input {
       border: none;
