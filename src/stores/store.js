@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import {message} from 'ant-design-vue';
 import {getMenuNameListApi} from "@/api/menu_api";
 import {getSiteInfoApi} from "@/api/system_api";
-
+import AES from "@/utils/AES";
 const data = {
     token: "",
     nick_name: '',
@@ -79,7 +79,9 @@ export const useStore = defineStore('gvb', {
                 userInfo: info
             })
             // 持久化
-            localStorage.setItem("userInfo", JSON.stringify(info))
+            // localStorage.setItem("userInfo", JSON.stringify(info))
+            let encrypts = AES.encrypt(JSON.stringify(info));
+            localStorage.setItem("userInfo", encrypts)
         },
         loadUserInfo() {
             let info = localStorage.getItem("userInfo")
@@ -87,8 +89,19 @@ export const useStore = defineStore('gvb', {
                 return
             }
             // 先json解析
-            let userInfo = JSON.parse(info)
+            let userInfo
+            try{
+                userInfo = JSON.parse(AES.decrypt(info))
+            }catch (e){
+                console.log(e)
+                localStorage.removeItem("userInfo")
+                return;
+            }
             let exp = userInfo.exp
+            if (exp === undefined){
+                localStorage.removeItem("userInfo")
+                return;
+            }
             let nowTime = new Date().getTime()
             if (((exp * 1000) - nowTime) < 0) {
                 // 过期了
