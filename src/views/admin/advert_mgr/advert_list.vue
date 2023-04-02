@@ -65,7 +65,7 @@
 import GVBTable from "@/components/admin/gvb_table.vue"
 import {reactive, ref} from "vue";
 import {message} from "ant-design-vue";
-import {createAdvertApi, updateAdvertApi} from "@/api/advert_api";
+import {createAdvertApi, updateAdvertApi} from "@/api/dvert_api";
 
 const gvbTable = ref(null)
 const formRef = ref(null)

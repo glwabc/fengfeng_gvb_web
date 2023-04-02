@@ -21,7 +21,7 @@
 <script setup>
 import GVBCCard from "@/components/gvb_card.vue"
 import {reactive} from "vue";
-import {getAdvertListApi} from "@/api/advert_api";
+import {getAdvertListApi} from "@/api/dvert_api";
 
 const data = reactive({
   advert_list: [
