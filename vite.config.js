@@ -7,6 +7,7 @@ import vue from '@vitejs/plugin-vue'
 export default ({mode}) => {
     const env = loadEnv(mode, process.cwd())
     const baseUrl = env.VITE_API
+    const wsUrl = env.VITE_WEBSOCKET
     return defineConfig({
         envPrefix: ["VITE_"],  // 需要使用的前缀
         plugins: [vue()],
@@ -25,8 +26,14 @@ export default ({mode}) => {
                 "/api": {
                     target: baseUrl,
                     changeOrigin: true,
+                },
+                "/ws": {
+                    target: wsUrl,
+                    changeOrigin: true,
+                    ws: true, //websocket代理设置
+                    rewrite: (path) => path.replace(/^\/ws/, "")
                 }
             }
-        }
+        },
     })
 }

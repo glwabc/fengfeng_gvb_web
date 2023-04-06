@@ -132,7 +132,7 @@ async function getData() {
 function websocketConnect() {
   // 建立websocket连接
   let websocketURL = import.meta.env.VITE_WEBSOCKET
-  socket = new WebSocket(websocketURL + "/api/chat_groups")
+  socket = new WebSocket(`ws://${location.host}/ws/api/chat_groups`)
   // 接收消息
   socket.onmessage = messageApply
 
