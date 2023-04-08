@@ -1,29 +1,47 @@
-# gvb_admin
+# GVB_WEB前端项目
 
-This template should help get you started developing with Vue 3 in Vite.
+## 效果
+首页
+![](http://python.fengfengzhidao.com/pic/20230408212814.png)
 
-## Recommended IDE Setup
+新闻页
+![](http://python.fengfengzhidao.com/pic/20230408212840.png)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+搜索页
+![](http://python.fengfengzhidao.com/pic/20230408212902.png)
 
-## Customize configuration
+聊天室
+![](http://python.fengfengzhidao.com/pic/20230408212938.png)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+全文搜索
+![](http://python.fengfengzhidao.com/pic/20230408213008.png)
 
-## Project Setup
+登录
+![](http://python.fengfengzhidao.com/pic/20230408213028.png)
+
+文章详情页
+![](http://python.fengfengzhidao.com/pic/20230408213110.png)
+
+文章评论
+![](http://python.fengfengzhidao.com/pic/20230408213150.png)
+
+我的信息
+![](http://python.fengfengzhidao.com/pic/20230408213213.png)
+
+黑夜模式
+![](http://python.fengfengzhidao.com/pic/20230408213234.png)
+
+文章列表
+![](http://python.fengfengzhidao.com/pic/20230408213301.png)
+
+发布文章
+![](http://python.fengfengzhidao.com/pic/20230408213333.png)
+
+
+## 项目运行
 
 ```sh
-npm install
-```
+npm i
 
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
 ```
